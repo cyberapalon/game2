@@ -1,6 +1,8 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://ui/depth_hud.gd" id="1"]
+
+[ext_resource type="Script" path="res://ui/descent.gd" id="2"]
 
 [sub_resource type="StyleBoxFlat" id="HudPanel"]
 content_margin_left = 16.0
@@ -55,11 +57,11 @@ offset_bottom = -24.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_colors/font_color = Color(0.75, 0.8, 0.79, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 12
 theme_override_colors/font_shadow_color = Color(0.015, 0.035, 0.05, 1)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 2
-text = "A / D или стрелки — движение     Пробел — прыжок"
+text = "A / D или стрелки — движение     Пробел — прыжок     E — взаимодействие"
 mouse_filter = 2
 
 [node name="Chapter" type="Label" parent="."]
@@ -78,6 +80,68 @@ theme_override_font_sizes/font_size = 12
 text = "ПРОЛОГ / 01
 ПЕПЕЛ И ФАРФОР"
 horizontal_alignment = 2
+mouse_filter = 2
+
+[node name="Prompt" type="Label" parent="."]
+offset_left = 220.0
+offset_top = 426.0
+offset_right = 740.0
+offset_bottom = 462.0
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.9, 0.85, 0.66, 1)
+theme_override_colors/font_shadow_color = Color(0.03, 0.06, 0.09, 1)
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 18
+mouse_filter = 2
+
+[node name="Dialogue" type="PanelContainer" parent="."]
+visible = false
+offset_left = 130.0
+offset_top = 305.0
+offset_right = 830.0
+offset_bottom = 468.0
+theme_override_styles/panel = SubResource("HudPanel")
+mouse_filter = 2
+[node name="Rows" type="VBoxContainer" parent="Dialogue"]
+layout_mode = 2
+theme_override_constants/separation = 12
+[node name="Speaker" type="Label" parent="Dialogue/Rows"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.73, 0.68, 0.49, 1)
+theme_override_font_sizes/font_size = 13
+[node name="Line" type="Label" parent="Dialogue/Rows"]
+layout_mode = 2
+custom_minimum_size = Vector2(660, 52)
+autowrap_mode = 2
+theme_override_font_sizes/font_size = 20
+[node name="Continue" type="Label" parent="Dialogue/Rows"]
+layout_mode = 2
+text = "E — продолжить"
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 14
+
+[node name="Fade" type="Control" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 960.0
+offset_bottom = 540.0
+mouse_filter = 2
+script = ExtResource("2")
+[node name="Darkness" type="ColorRect" parent="Fade"]
+show_behind_parent = true
+offset_right = 960.0
+offset_bottom = 540.0
+color = Color(0.025, 0.045, 0.05, 1)
+mouse_filter = 2
+[node name="Travel" type="Label" parent="Fade"]
+offset_left = 220.0
+offset_top = 230.0
+offset_right = 740.0
+offset_bottom = 310.0
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 23
+theme_override_colors/font_color = Color(0.79, 0.8, 0.66, 1)
 mouse_filter = 2
 
 [node name="SoundToggle" type="Button" parent="."]

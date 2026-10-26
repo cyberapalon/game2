@@ -27,6 +27,10 @@ jump={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"physical_keycode":32)]
 }
+interact={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":69)]
+}
 
 [layer_names]
 2d_physics/layer_1="World"

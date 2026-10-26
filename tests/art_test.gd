@@ -29,8 +29,8 @@ func test_painted_ground_fits_collision_and_audio_waits_for_gesture() -> void:
 	var surface: Node2D = auto_free(SurfaceScene.instantiate())
 	get_tree().root.add_child(surface)
 	await get_tree().process_frame
-	var ground: Sprite2D = surface.get_node("Floor/Earth")
-	var ledge: Sprite2D = surface.get_node("RubblePlatform/Rubble")
+	var ground: Sprite2D = surface.room.get_node("Floor/Earth")
+	var ledge: Sprite2D = surface.room.get_node("RubblePlatform/Rubble")
 	assert_vector(ground.texture.get_size()).is_equal(Vector2(1600, 140))
 	assert_vector(ledge.texture.get_size()).is_equal(Vector2(180, 78))
 	assert_vector(ground.global_position).is_equal(Vector2(0, 420))
