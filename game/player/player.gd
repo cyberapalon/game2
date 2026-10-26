@@ -20,12 +20,13 @@ func _update_visual() -> void:
 	# Presentation reads the result of physics; no clip controls movement.
 	if not is_zero_approx(velocity.x):
 		visual.flip_h = velocity.x < 0.0
+	var clip: StringName = &"idle"
 	if not is_on_floor():
-		visual.play(&"jump" if velocity.y < 0.0 else &"fall")
+		clip = &"jump" if velocity.y < 0.0 else &"fall"
 	elif not is_zero_approx(velocity.x):
-		visual.play(&"run")
-	else:
-		visual.play(&"idle")
+		clip = &"run"
+	if visual.animation != clip:
+		visual.play(clip)
 
 
 func _notification(what: int) -> void:

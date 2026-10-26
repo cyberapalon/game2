@@ -1,63 +1,77 @@
-# Фаза 2: «Пепельный прилив»
+# Пепел и фарфор
 
-Оригинальная рисованная поверхность Земли: стёртый бетон, остатки железной
-дороги, разрушенная радиообсерватория и холодная воздушная перспектива.
-Серо-синие и землистые оттенки, тёплый просвет в облаках и один янтарный
-фонарь. Hollow Knight используется только как ориентир меланхолии;
-его графика, персонажи и узнаваемые формы масок не используются.
+Пользователь выбрал концепт 1 из трёх AI-концептов. Его оригинал сохранён
+в `assets/reference/ash_and_porcelain.png`. Художественный ориентир —
+выразительность рисованного 2D, глубина и мрачная красота; персонаж,
+разрушенная человеческая инфраструктура и корневые формы оригинальные.
+Холодные сине-серые и пыльно-голубые тона, глубокий индиго, костяная керамика
+и редкие янтарные акценты. Детальные тушевые контуры и живописная фактура.
 
-Герой — маленький странник с асимметричной слоистой керамической маской,
-одной боковой прорезью, трещиной и потёртым синим плащом. Охристый шарф,
-светлая маска и светлый край ткани отделяют силуэт от руин. Маска без рогов,
-силуэт и рисунки созданы для этого проекта.
+## Реализация в существующей комнате
 
-## Источники и воспроизведение
+Герой, земля, уступ, детали окружения, параллакс и эффекты используют настоящие
+AI-сгенерированные PNG. Ближний фон — прозрачные корни и руины, дальний —
+погибший город в дымке; передний план — сухие папоротники и корни.
+Коэффициенты Parallax2D: 0.48 / 0.85 / 1.08. Передний план опущен на 120 px,
+чтобы не закрывать героя. Две полупрозрачные дымки и 34 частицы пепла
+используют извлечённые рисованные текстуры.
 
-Все новые ассеты созданы в этой задаче для `cyberapalon/game2`; сторонние
-ассеты, stock-изображения и платные asset-сервисы не подключались.
-Новых лицензионных ограничений со стороны автора программной SVG-графики нет;
-использование вместе с проектом разрешено. Панорама — результат встроенного
-генератора изображений ChatGPT; отдельный API или ключ не использовался.
+Существующий пол остаётся на y=420, уступ 180×78 — на y=342. После просмотра
+Web-кадра видимые границы повторяемых тайлов устранены: пол использует
+дополнительный цельный AI-исходник, уступ — отдельный рисованный обломок.
+TileSet с восемью тайлами 64×64 и восемь отдельных props сохранены как набор
+для дальнейшего оформления маршрута. Новых комнат, NPC и боевой системы нет.
+Коллизии, скорость 240 px/s, gravity 1400 и jump_speed 500 сохранены.
 
-| Ресурс | Источник и формат | Импорт / использование |
+## Кадры и импорт
+
+| Ресурс | Сохранённый исходник | Использование |
 | --- | --- | --- |
-| `world/surface/art/panorama.png` | Встроенная генерация, исходный PNG **2172×724**, без редактирования | Непрозрачный фон, линейная фильтрация, затемнение через modulate; около 1600×540 в мире |
-| `game/player/art/*.svg` | Оригинальные кривые и градиенты, `tools/generate_surface_art.py` | RGBA, **128×128**, scale 0.5, pivot (64,64), стопы (64,108); прозрачные поля |
-| `earth.svg` / `rubble.svg` | Тот же детерминированный генератор | **1600×140** / **180×78** (коллизия уступа 180×24), верхние левые pivots; край пола y=420, уступа y=342 |
-| `ruins.svg` / `foreground.svg` | Оригинальные SVG, штриховка и сколы | **1800×540**, прозрачный фон; отдельные Parallax2D |
-| `mist.svg` / `mote.svg` | Оригинальные SVG с прозрачными градиентами | **1800×180** / **16×16**, без дорогих lights и shaders |
+| Герой | `assets/source/wanderer.png`, 1122×1402, RGBA | 4×5 ячеек; atlas 512×640; 20 кадров 128×128 |
+| Среда | `assets/source/terrain.png`, 1254×1254, RGBA | 4×4; восемь тайлов и восемь props |
+| Цельная земля | `assets/source/ground.png`, 2172×724, RGBA | Непрерывный фрагмент 1600×140, без повторения ячеек |
+| Дальний город | `assets/backgrounds/skyline.png`, 2172×724, RGB | Непрозрачная панорама |
+| Корни и руины | `assets/backgrounds/roots.png`, 2172×724, RGBA | Прозрачный ближний фон |
+| Папоротники | `assets/backgrounds/foreground.png`, 2172×724, RGBA | Передний план, пустая центральная область |
+| Эффекты | `assets/source/effects.png`, 1254×1254, RGBA | 8 кадров пыли 128×128, дымка и частица |
 
-Воспроизведение SVG и `player_frames.tres` из корня:
+AnimatedSprite2D: idle 4 кадра / 5 FPS / loop; run 8 / 16 / loop;
+jump 4 / 12 / one-shot; fall 4 / 10 / one-shot. Не перезапускаем клип,
+пока состояние движения не изменилось. Единый canvas 128×128, центр (64,64),
+стопы на y=108. Масштаб 0.6 и position.y=-4.4 сохраняют стопы на нижнем
+крае коллизии (+22 px). Общий масштаб кадров, только перевод к общей линии
+стоп; движения тела в анимации нет. Линейная фильтрация, прозрачные поля,
+AtlasTexture с filter_clip. Исходные PNG не перезаписываются.
+
+Фактические размеры отличаются от заданных в prompt; сетка режется целыми
+долями фактического canvas. Границы строк эффектов и положение верхнего края
+земли определены по самому изображению, а не по обещанию генератора.
+
+## Звук
+
+Семь оригинальных mono PCM WAV 22050 Hz: 15-секундный зацикленный ветер
+с тихим дроном и скрипом корней, четыре варианта шага, прыжок и приземление.
+Это детерминированный синтез Python, а не AI-аудио и не сторонние записи.
+Первый настоящий ввод запускает ambience; M или кнопка «ЗВУК» отключают
+и включают звук. Пыль и звук читают результат физики через отдельный
+`surface_presentation.gd`, не меняя состояние игрока.
+
+## Воспроизведение и происхождение
 
 ```bash
-python3 tools/generate_surface_art.py
+python3 tools/build_art_resources.py
+python3 tools/build_sound_resources.py
+godot --headless --editor --path . --import
 ```
 
-Генератор использует только Python stdlib и фиксированный seed 71; PNG
-панорамы не перезаписывает. SVG являются редактируемыми исходниками и
-импортируются штатным Godot SVG importer. Импортные `.import` сохраняются.
-Нет atlas bleeding: каждый кадр — отдельная текстура с прозрачными полями.
-Для анализа можно выполнить `magick identify world/surface/art/panorama.png`.
+Первый скрипт только обрезает, масштабирует, выравнивает и пакует готовые
+AI-изображения. Он не рисует персонажей, тайлы или окружение. Второй создаёт
+WAV по сохранённым рецептам. Настройка loop ambience хранится в `.wav.import`.
+Точные prompts — `assets/GENERATION_PROMPTS.md`, SHA-256 и размеры —
+`assets/generation_manifest.json`, происхождение — `ASSET_PROVENANCE.md`.
 
-## Анимации и планы
-
-`AnimatedSprite2D` + `player_frames.tres`: idle — 6 кадров / 6 FPS,
-run — 8 / 12 FPS, jump и fall — по 2 / 6 FPS, все loop.
-Одинаковый canvas и pivot; ноги, плащ и шарф меняют позу.
-Положительная/отрицательная вертикальная скорость выбирает fall/jump;
-после приземления выбирается idle или run. `flip_h` следует направлению
-движения и сохраняется в покое. Единственный владелец движения тела —
-`player.gd`, `_physics_process`; анимации не меняют transform/velocity/коллизии.
-
-Parallax2D: панорама 0.48, близкие руины 0.85, передний план 1.08;
-вертикальный масштаб прокрутки 1, чтобы прыжок не отрывал рисунок пола
-от коллизий. Передний план ниже игровой дорожки. Дымка медленно дрейфует;
-28 полупрозрачных частиц пепла работают через CPUParticles2D.
-HUD — отдельный CanvasLayer, фиксированная глубина комнаты 0.00 км.
-
-## Prompt панорамы
-
-Запрошен широкий исходник 3072×1024; генератор вернул 2172×724, пропорция 3:1.
-Точный текст запроса:
-
-> Create an original production-quality hand-painted 2D side-scrolling game BACKGROUND asset, wide panoramic landscape 3072x1024 or widest possible landscape. NO pixel art, NO characters, NO typography, NO interface, NO watermarks. Art direction: 'Ash tide' ruined surface of EARTH after an ancient catastrophe. Sublime melancholy, beautiful eerie silence. Muted slate-blue and weathered earthy gray, dusty teal mist, very sparse amber glimmers. Ink contours, layered gouache washes and etched architectural detail, subtle paper tooth. A huge collapsed circular radio observatory structure towards the RIGHT third, recognizably human ruined concrete residential towers with broken windows on left, crushed elevated railway arches, bent antennae, enormous pale clouded sky occupying upper half, pale faint light shafts. Lower half is layers of receding rubble hills and atmospheric ground mist, disappearing into a dark desaturated slate-blue lower edge. Side-on orthographic theatrical scenery, traversable gameplay floor will be added separately along y=80% so DO NOT draw any obvious playable platforms. Make the middle lower region calm and luminous mist, for a small ivory-mask character to read. Foreground is NOT present, no big black silhouettes close to viewer. Moody, sophisticated illustrative cinematic composition, neither realistic 3D render nor flat geometric vector, absolutely original buildings and environment.
+Программные SVG и `tools/generate_surface_art.py` предыдущей фазы оставлены
+как исторические исходники, но игровая сцена их больше не использует.
+Старый SVG-генератор не следует запускать: он создаёт прежние кадры.
+Исторический отчёт — `docs/phase-2-report.md`; актуальная ревизия —
+`docs/art-revision-report.md`.

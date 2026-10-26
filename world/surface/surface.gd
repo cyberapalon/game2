@@ -36,5 +36,10 @@ func _physics_process(_delta: float) -> void:
 			"background_screen_x": $Sky/Panorama.get_global_transform_with_canvas().origin.x,
 			"ruins_screen_x": $Ruins/Architecture.get_global_transform_with_canvas().origin.x,
 			"foreground_screen_x": $Foreground/Debris.get_global_transform_with_canvas().origin.x,
+			"audio_started": $Presentation.started,
+			"audio_muted": $Presentation.muted,
+			"ambience_playing": $Presentation/Ambience.playing,
+			"step_count": $Presentation.step_count,
+			"land_count": $Presentation.land_count,
 		}
 		JavaScriptBridge.eval("window.__depthE2E = " + JSON.stringify(state))

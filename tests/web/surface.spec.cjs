@@ -17,9 +17,12 @@ test('Web surface receives keyboard input, moves, jumps, lands and releases focu
   page.on('pageerror', error => errors.push(error.message));
   page.on('requestfailed', request => errors.push(`${request.url()}: ${request.failure().errorText}`));
 
+  // Inspect the WASM response actually consumed by the engine. A separate
+  // request.get duplicated the 37 MB streaming download during cold startup.
+  const wasmResponse = page.waitForResponse(response => new URL(response.url()).pathname === '/index.wasm');
   const response = await page.goto('/index.html?e2e=1');
   expect(response.ok()).toBeTruthy();
-  const wasm = await page.request.get('/index.wasm');
+  const wasm = await wasmResponse;
   expect(wasm.ok()).toBeTruthy();
   expect(wasm.headers()['content-type']).toContain('application/wasm');
   await expect.poll(async () => (await state(page))?.grounded, { timeout: 45000 }).toBe(true);
@@ -208,5 +211,61 @@ test('ordinary Web launch works without exposing E2E state', async ({ page }) =>
   await expect.poll(() => messages.some(m => m.includes('DEPTH_SURFACE_READY')), { timeout: 45000 }).toBe(true);
   await expect(page.locator('#canvas')).toBeVisible();
   expect(await state(page)).toBeUndefined();
+  expect(errors).toEqual([]);
+});
+
+test('painted movement triggers dust and actual browser audio can be muted', async ({ page }, testInfo) => {
+  // Observe the real Web Audio graph without injecting gameplay commands.
+  await page.addInitScript(() => {
+    window.__audioProbe = [];
+    const connect = AudioNode.prototype.connect;
+    AudioNode.prototype.connect = function(destination, ...args) {
+      if (destination instanceof AudioDestinationNode) {
+        const analyser = this.context.createAnalyser();
+        analyser.fftSize = 1024;
+        connect.call(this, analyser);
+        window.__audioProbe.push({ context: this.context, analyser });
+      }
+      return connect.call(this, destination, ...args);
+    };
+  });
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  page.on('console', message => {
+    if (message.type() === 'error' || /SCRIPT ERROR:|Parse Error:|^ERROR:/.test(message.text())) errors.push(message.text());
+  });
+  await page.goto('/index.html?e2e=1');
+  await expect.poll(async () => (await state(page))?.grounded, { timeout: 45000 }).toBe(true);
+  expect((await state(page)).audio_started).toBe(false);
+  await page.locator('#canvas').click();
+  await page.keyboard.press('ArrowRight');
+  await expect.poll(async () => (await state(page)).audio_started).toBe(true);
+  const rms = () => page.evaluate(() => {
+    let maximum = 0;
+    for (const { context, analyser } of window.__audioProbe) {
+      if (context.state !== 'running') continue;
+      const data = new Float32Array(analyser.fftSize);
+      analyser.getFloatTimeDomainData(data);
+      maximum = Math.max(maximum, Math.sqrt(data.reduce((total, x) => total + x * x, 0) / data.length));
+    }
+    return maximum;
+  });
+  await expect.poll(rms).toBeGreaterThan(0.0001);
+  await page.keyboard.press('KeyM');
+  await expect.poll(async () => (await state(page)).audio_muted).toBe(true);
+  await expect.poll(rms).toBeLessThan(0.00001);
+  await page.keyboard.press('KeyM');
+  await expect.poll(async () => (await state(page)).audio_muted).toBe(false);
+  await expect.poll(rms).toBeGreaterThan(0.0001);
+  await page.keyboard.down('KeyD');
+  try {
+    await expect.poll(async () => (await state(page)).step_count).toBeGreaterThan(1);
+  } finally {
+    await page.keyboard.up('KeyD');
+  }
+  await page.keyboard.press('Space');
+  await expect.poll(async () => (await state(page)).land_count).toBeGreaterThan(0);
+  expect((await state(page)).ambience_playing).toBe(true);
+  fs.writeFileSync(testInfo.outputPath('audio.json'), JSON.stringify({ rms: await rms(), state: await state(page), errors }, null, 2));
   expect(errors).toEqual([]);
 });

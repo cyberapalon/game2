@@ -1,0 +1,47 @@
+[gd_resource type="SpriteFrames" load_steps=10 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/vfx/effects_atlas.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="land_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 128, 128)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="land_1"]
+atlas = ExtResource("1")
+region = Rect2(128, 0, 128, 128)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="land_2"]
+atlas = ExtResource("1")
+region = Rect2(256, 0, 128, 128)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="land_3"]
+atlas = ExtResource("1")
+region = Rect2(384, 0, 128, 128)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="step_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 128, 128, 128)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="step_1"]
+atlas = ExtResource("1")
+region = Rect2(128, 128, 128, 128)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="step_2"]
+atlas = ExtResource("1")
+region = Rect2(256, 128, 128, 128)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="step_3"]
+atlas = ExtResource("1")
+region = Rect2(384, 128, 128, 128)
+filter_clip = true
+
+[resource]
+animations = [{"frames": [{"duration": 1.0, "texture": SubResource("land_0")}, {"duration": 1.0, "texture": SubResource("land_1")}, {"duration": 1.0, "texture": SubResource("land_2")}, {"duration": 1.0, "texture": SubResource("land_3")}], "loop": false, "name": &"land", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("step_0")}, {"duration": 1.0, "texture": SubResource("step_1")}, {"duration": 1.0, "texture": SubResource("step_2")}, {"duration": 1.0, "texture": SubResource("step_3")}], "loop": false, "name": &"step", "speed": 14.0}]

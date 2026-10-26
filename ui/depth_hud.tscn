@@ -29,7 +29,7 @@ theme_override_constants/separation = 4
 [node name="Title" type="Label" parent="Margin/Rows"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.88, 0.91, 0.84, 1)
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 18
 text = "ГЛУБИНА"
 
 [node name="Depth" type="Label" parent="Margin/Rows"]
@@ -76,6 +76,25 @@ theme_override_colors/font_shadow_color = Color(0.03, 0.06, 0.09, 0.8)
 theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 12
 text = "ПРОЛОГ / 01
-ПЕПЕЛЬНЫЙ ПРИЛИВ"
+ПЕПЕЛ И ФАРФОР"
 horizontal_alignment = 2
 mouse_filter = 2
+
+[node name="SoundToggle" type="Button" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -166.0
+offset_top = -54.0
+offset_right = -28.0
+offset_bottom = -22.0
+grow_horizontal = 0
+grow_vertical = 0
+focus_mode = 0
+theme_override_colors/font_color = Color(0.81, 0.82, 0.74, 1)
+theme_override_font_sizes/font_size = 12
+toggle_mode = true
+text = "ЗВУК ВКЛ · M"
+flat = true
