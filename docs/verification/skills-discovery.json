@@ -1,0 +1,35 @@
+{
+  "codex_version": "codex-cli 0.163.0",
+  "method": "skills/list",
+  "force_reload": true,
+  "isolated_child_config": true,
+  "model_turn_started": false,
+  "cwd": "/workspace/game2",
+  "skills": [
+    {
+      "name": "godot-2d-art-animation",
+      "path": "/workspace/game2/.agents/skills/godot-2d-art-animation/SKILL.md",
+      "scope": "repo",
+      "enabled": true
+    },
+    {
+      "name": "godot-2d-gameplay",
+      "path": "/workspace/game2/.agents/skills/godot-2d-gameplay/SKILL.md",
+      "scope": "repo",
+      "enabled": true
+    },
+    {
+      "name": "godot-gdscript",
+      "path": "/workspace/game2/.agents/skills/godot-gdscript/SKILL.md",
+      "scope": "repo",
+      "enabled": true
+    },
+    {
+      "name": "godot-testing",
+      "path": "/workspace/game2/.agents/skills/godot-testing/SKILL.md",
+      "scope": "repo",
+      "enabled": true
+    }
+  ],
+  "errors": []
+}

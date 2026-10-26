@@ -1,0 +1,74 @@
+{
+  "platform": {
+    "os": "Debian GNU/Linux 13.6 (trixie)",
+    "architecture": "x86_64"
+  },
+  "godot": {
+    "version": "4.6.3.stable.official.7d41c59c4",
+    "flavor": "standard (non-.NET)",
+    "templates": "4.6.3.stable",
+    "targets": [
+      "Web",
+      "Windows x86_64",
+      "Linux x86_64"
+    ],
+    "release": "https://github.com/godotengine/godot-builds/releases/tag/4.6.3-stable",
+    "binary_archive_sha512": "a035258da32b77f966a5376f9fa29c30a6adde826a85ba918e1605bd1fc9823eba7d85f1dd5e748956bd2ba72827c0025ffa11bb82aec91128c407a2e723c99c",
+    "templates_archive_sha512": "da606b61c10157844f8300172df374472665f95015495cb1a7cd132c40ede404faa96cc1016a4b9662db9909ddea69632c4948b2cd11163438dad4808881fb68"
+  },
+  "gdunit": {
+    "version": "6.2.2",
+    "commit": "0127a55f4543dfc24746f6e5c7ba6f94105d51f2",
+    "archive_sha256": "58a391b0c85cbbcf7aeb09b718c8173793d45ab511950cd65eec0183aabf0e50",
+    "project_addon_installed": false
+  },
+  "playwright": "1.62.1",
+  "chromium": {
+    "version": "154.0.8037.57",
+    "executable": "/usr/bin/chromium",
+    "source": "Debian base image",
+    "bundled_playwright_browser_used": false
+  },
+  "base_tools": {
+    "node": "24.19.0",
+    "npm": "11.9.0",
+    "python": "3.12.14",
+    "imagemagick": "7.1.1-43",
+    "ffmpeg": "7.1.5-0+deb13u1"
+  },
+  "optional_integrations": {
+    "repository_skills": [
+      "godot-gdscript",
+      "godot-2d-gameplay",
+      "godot-2d-art-animation",
+      "godot-testing"
+    ],
+    "godot_mcp": {
+      "installed": false,
+      "toolkit_version": "1.1.0",
+      "toolkit_commit": "c22ddb4be5f45c1e01b86866356935bbd8643dd9",
+      "toolkit_archive_url": "https://github.com/NPGameDev/godot-mcp-toolkit/releases/download/v1.1.0/godot-mcp-toolkit-1.1.0.zip",
+      "toolkit_archive_sha256": "3370a7ff44d61ecd5519ab44ccd866d68644c4b099de1e85e5fad913dbdd12f8",
+      "server_version": "1.1.0",
+      "server_commit": "3ac62a06a988bc1312229aa828190ed6121cb7de",
+      "server_package": "@npgamedev/godot-mcp-server",
+      "server_tarball_url": "https://registry.npmjs.org/@npgamedev/godot-mcp-server/-/godot-mcp-server-1.1.0.tgz",
+      "server_integrity": "sha512-QAx/BFKV8d3dO55wHw0KKdaceEv7KwlgNXWq5cyKsDxsODX7WbwFzZeLaeCt23zfjYMbtDXtIlNXfaLUqMSBaw==",
+      "verified": "artifact digests and source/docs only; no MCP/editor session"
+    }
+  },
+  "recorded_on": "2026-10-26",
+  "codex_cli_observed": "0.163.0",
+  "environment_owned_files_sha256": {
+    "install.sh": "182babb3be9aa344d842826b8e13f70e8b4e186deeccbb6d8bef6228d9ebc19e",
+    "env.sh": "ca8825b380dc0888921d3cf707b811254ead2b3e685d75e51677997d876717c6",
+    "check_project.py": "8a2d2608f02a8ade6847503c8639a50632f5e71bedabdc3ac81c36696060a353",
+    "validate.py": "9728f1f132547213abd619ed627f2c475a5166901f9b107e3fb7d6725190ee33",
+    "create_probe.py": "c718f77c05e162f7ad94e49becf24bae2c63fd0f5c96ea6835417167ef452a35",
+    "serve_web.py": "407c6ed2d5fec9f3e1d8cfa497a52681d68624dbdb9f34ad534f0cb2e30a6cb6",
+    "playwright.config.cjs": "4dfe9c9760a16136c96c68b9034fc3a46971700373402d159b46aabcaaf4fe7c",
+    "tools/browser/package.json": "58286b08694d6cacfa8cdea471d6fdc8107e0a64a69743f8fea6482cf27d6519",
+    "tools/browser/package-lock.json": "16b12aab09e8b727da10f6a286714ec08acb2e86a21116b474732d9ac6c62dc7"
+  },
+  "reproduction_boundary": "Prepared managed Debian x86_64 image plus /workspace/.godot-cloud helpers; not a standalone portable installer"
+}

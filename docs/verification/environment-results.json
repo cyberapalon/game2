@@ -1,0 +1,21 @@
+{
+  "godot": "4.6.3.stable.official.7d41c59c4",
+  "gdunit_version": "6.2.2",
+  "playwright_version": "1.62.1",
+  "chromium": "154.0.8037.57",
+  "gdunit": {
+    "tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "exports": [
+    "Web",
+    "Linux x86_64",
+    "Windows x86_64"
+  ],
+  "linux_release_executed": true,
+  "web_browser_e2e": "passed",
+  "windows_runtime_executed": false,
+  "completed_at_utc": "2026-10-26T17:00:20Z"
+}
