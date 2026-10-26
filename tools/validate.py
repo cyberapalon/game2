@@ -103,6 +103,8 @@ def unit(suite):
 
 def build():
     shutil.rmtree(BUILD, ignore_errors=True)
+    BUILD.mkdir()
+    (BUILD / '.gdignore').touch()
     for preset, output in [('Web', 'web/index.html'), ('Windows', 'windows/depth.exe'),
                            ('Linux', 'linux/depth.x86_64')]:
         destination = BUILD / output
@@ -155,6 +157,7 @@ def main():
     args = parser.parse_args()
     os.chdir(ROOT)
     REPORT.mkdir(parents=True)
+    (ROOT / 'reports/.gdignore').touch()
     result = {'godot': prerequisites(), 'run_id': RUN_ID}
     if args.command in ('all', 'check'):
         checks()

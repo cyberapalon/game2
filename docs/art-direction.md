@@ -61,3 +61,35 @@ HUD — отдельный CanvasLayer, фиксированная глубин�
 Точный текст запроса:
 
 > Create an original production-quality hand-painted 2D side-scrolling game BACKGROUND asset, wide panoramic landscape 3072x1024 or widest possible landscape. NO pixel art, NO characters, NO typography, NO interface, NO watermarks. Art direction: 'Ash tide' ruined surface of EARTH after an ancient catastrophe. Sublime melancholy, beautiful eerie silence. Muted slate-blue and weathered earthy gray, dusty teal mist, very sparse amber glimmers. Ink contours, layered gouache washes and etched architectural detail, subtle paper tooth. A huge collapsed circular radio observatory structure towards the RIGHT third, recognizably human ruined concrete residential towers with broken windows on left, crushed elevated railway arches, bent antennae, enormous pale clouded sky occupying upper half, pale faint light shafts. Lower half is layers of receding rubble hills and atmospheric ground mist, disappearing into a dark desaturated slate-blue lower edge. Side-on orthographic theatrical scenery, traversable gameplay floor will be added separately along y=80% so DO NOT draw any obvious playable platforms. Make the middle lower region calm and luminous mist, for a small ivory-mask character to read. Foreground is NOT present, no big black silhouettes close to viewer. Moody, sophisticated illustrative cinematic composition, neither realistic 3D render nor flat geometric vector, absolutely original buildings and environment.
+
+## Фаза 3: «Память почвы»
+
+Новые исходники — оригинальные SVG, созданные для game2 генератором
+`tools/generate_roots_art.py` (только Python stdlib). Сторонние ассеты и
+лицензии не добавляются; использование вместе с проектом разрешено.
+Поверхность и все кадры героя фазы 2 сохраняются.
+
+План ассетов до импорта: четыре непрозрачных фона комнат 1280×540, четыре
+прозрачных передних плана 1280×540; земля и уступы с читаемым верхним краем.
+Статичные NPC 160×180 (стопы 80,164), шахта 240×280 (порог 120,258), портал
+120×160 (порог 60,148), закрытый проход 240×400 и находка 56×56. Все SVG
+имеют верхний левый pivot при размещении окружения; NPC центрируется по
+стопам, находка по центру. Линейная фильтрация, RGBA, без новых клипов или
+изменений SpriteFrames героя. Это неподвижная графика, без sprite sheets.
+
+Палитра продолжает холодные серо-синие тени поверхности, добавляя торфяной
+коричневый, мох и редкий молочно-бирюзовый свет. Крупные изогнутые корни,
+тонкая штриховка древесины, слои дальних нор, висячие волокна и точечные
+споры создают глубину без дорогих lights/shaders. Каждая композиция задана
+вручную: вертикаль шахты, раздвоенный корень, полость тайной норы и веер
+корней перед закрытым проходом. Декоративная детализация детерминирована;
+генерации игровых комнат во время выполнения нет.
+
+После просмотра первого Web-маршрута добавлен живописный дальний план:
+`world/roots/art/panorama.png`, встроенная генерация ChatGPT, оригинальный
+PNG **1931×814**, непрозрачный, без внешнего API/ключа. Он не редактировался;
+Godot масштабирует его до 1280×540 с линейной фильтрацией. Композиции SVG
+остаются отдельным приглушённым планом (alpha 0.18), зеркальный дальний план
+развилки/свода и вручную расставленные уступы различают комнаты. NPC после
+просмотра уменьшен до scale 0.6; ноги по-прежнему стоят на краю поверхности.
+Точный prompt нового PNG: [roots-panorama-prompt](roots-panorama-prompt.txt).

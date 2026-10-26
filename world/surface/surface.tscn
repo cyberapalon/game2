@@ -1,138 +1,16 @@
-[gd_scene load_steps=15 format=3]
-
+[gd_scene load_steps=4 format=3]
 [ext_resource type="Script" path="res://world/surface/surface.gd" id="1"]
 [ext_resource type="PackedScene" path="res://game/player/player.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://ui/depth_hud.tscn" id="3"]
-[ext_resource type="Texture2D" path="res://world/surface/art/panorama.png" id="4"]
-[ext_resource type="Texture2D" path="res://world/surface/art/ruins.svg" id="5"]
-[ext_resource type="Texture2D" path="res://world/surface/art/earth.svg" id="6"]
-[ext_resource type="Texture2D" path="res://world/surface/art/rubble.svg" id="7"]
-[ext_resource type="Texture2D" path="res://world/surface/art/foreground.svg" id="8"]
-[ext_resource type="Texture2D" path="res://world/surface/art/mist.svg" id="9"]
-[ext_resource type="Texture2D" path="res://world/surface/art/mote.svg" id="10"]
-[ext_resource type="Script" path="res://world/surface/atmosphere.gd" id="11"]
-
-[sub_resource type="RectangleShape2D" id="FloorShape"]
-size = Vector2(1600, 120)
-
-[sub_resource type="RectangleShape2D" id="WallShape"]
-size = Vector2(40, 1000)
-
-[sub_resource type="RectangleShape2D" id="PlatformShape"]
-size = Vector2(180, 24)
-
 [node name="Surface" type="Node2D"]
 script = ExtResource("1")
-
-[node name="Sky" type="Parallax2D" parent="."]
-z_index = -30
-scroll_scale = Vector2(0.48, 1)
-
-[node name="Panorama" type="Sprite2D" parent="Sky"]
-modulate = Color(0.68, 0.76, 0.8, 1)
-texture_filter = 2
-position = Vector2(-200, 0)
-scale = Vector2(0.73664825, 0.74585635)
-texture = ExtResource("4")
-centered = false
-
-[node name="Ruins" type="Parallax2D" parent="."]
-z_index = -20
-scroll_scale = Vector2(0.85, 1)
-
-[node name="Architecture" type="Sprite2D" parent="Ruins"]
-texture_filter = 2
-texture = ExtResource("5")
-centered = false
-
-[node name="Atmosphere" type="Node2D" parent="."]
-z_index = -10
-script = ExtResource("11")
-
-[node name="Mist" type="Sprite2D" parent="Atmosphere"]
-position = Vector2(-90, 280)
-texture = ExtResource("9")
-centered = false
-
-[node name="Ash" type="CPUParticles2D" parent="Atmosphere"]
-position = Vector2(800, 230)
-amount = 28
-lifetime = 18.0
-preprocess = 18.0
-texture = ExtResource("10")
-emission_shape = 3
-emission_rect_extents = Vector2(800, 200)
-direction = Vector2(-1, -0.15)
-spread = 18.0
-gravity = Vector2(0, -0.2)
-initial_velocity_min = 5.0
-initial_velocity_max = 14.0
-scale_amount_min = 0.15
-scale_amount_max = 0.4
-color = Color(0.82, 0.83, 0.71, 0.4)
-
-[node name="Floor" type="StaticBody2D" parent="."]
-position = Vector2(800, 480)
-collision_layer = 1
-collision_mask = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
-shape = SubResource("FloorShape")
-
-[node name="Earth" type="Sprite2D" parent="Floor"]
-texture_filter = 2
-position = Vector2(-800, -60)
-texture = ExtResource("6")
-centered = false
-
-[node name="LeftBoundary" type="StaticBody2D" parent="."]
-position = Vector2(-20, 100)
-collision_layer = 1
-collision_mask = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftBoundary"]
-shape = SubResource("WallShape")
-
-[node name="RightBoundary" type="StaticBody2D" parent="."]
-position = Vector2(1620, 100)
-collision_layer = 1
-collision_mask = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RightBoundary"]
-shape = SubResource("WallShape")
-
-[node name="RubblePlatform" type="StaticBody2D" parent="."]
-position = Vector2(1010, 354)
-collision_layer = 1
-collision_mask = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RubblePlatform"]
-shape = SubResource("PlatformShape")
-
-[node name="Rubble" type="Sprite2D" parent="RubblePlatform"]
-texture_filter = 2
-position = Vector2(-90, -12)
-texture = ExtResource("7")
-centered = false
-
+[node name="RoomHost" type="Node2D" parent="."]
 [node name="Player" parent="." instance=ExtResource("2")]
 position = Vector2(320, 398)
-
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(0, -128)
 limit_left = 0
 limit_top = 0
 limit_right = 1600
 limit_bottom = 540
-
 [node name="DepthHud" parent="." instance=ExtResource("3")]
-
-[node name="Foreground" type="Parallax2D" parent="."]
-z_index = 10
-scroll_scale = Vector2(1.08, 1)
-
-[node name="Debris" type="Sprite2D" parent="Foreground"]
-texture_filter = 2
-position = Vector2(-40, 0)
-texture = ExtResource("8")
-centered = false

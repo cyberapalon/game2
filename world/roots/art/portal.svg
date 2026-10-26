@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="160" viewBox="0 0 120 160"><defs>
+<linearGradient id="air" x2="0.2" y2="1"><stop stop-color="#121f24"/><stop offset=".6" stop-color="#263a3b"/><stop offset="1" stop-color="#142627"/></linearGradient>
+<linearGradient id="soil" x2="0" y2="1"><stop stop-color="#626354"/><stop offset=".12" stop-color="#3d443b"/><stop offset="1" stop-color="#171f21"/></linearGradient>
+<linearGradient id="wood" x1="0" x2="1" y2=".7"><stop stop-color="#323a32"/><stop offset=".4" stop-color="#74705a"/><stop offset=".55" stop-color="#5b6050"/><stop offset="1" stop-color="#27332e"/></linearGradient>
+<radialGradient id="glow"><stop stop-color="#b4d9b6" stop-opacity=".28"/><stop offset="1" stop-color="#789d8c" stop-opacity="0"/></radialGradient>
+<linearGradient id="haze" x2="0" y2="1"><stop stop-color="#88a79a" stop-opacity="0"/><stop offset=".65" stop-color="#88a79a" stop-opacity=".12"/><stop offset="1" stop-color="#88a79a" stop-opacity="0"/></linearGradient>
+</defs><path d="M12 158V76C12 3 108 3 108 76V158Z" fill="#101f20" stroke="#606753" stroke-width="10" stroke-linecap="round" /><path d="M24 156V78C24 22 96 22 96 78V156" fill="#09171c" stroke="#293d37" stroke-width="6" stroke-linecap="round" /><path d="M10 152q26-20 43 4M77 153q15-15 35-5" fill="none" stroke="#828064" stroke-width="6" stroke-linecap="round" /></svg>

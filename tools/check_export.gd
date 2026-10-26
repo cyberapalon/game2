@@ -15,10 +15,16 @@ func _initialize() -> void:
 			push_error("Development dependency leaked into release: " + path)
 			quit(1)
 			return
-	if not ResourceLoader.exists("res://world/surface/surface.tscn"):
-		push_error("Main scene missing from release")
-		quit(1)
-		return
+	for required: String in [
+		"res://world/surface/surface.tscn", "res://world/surface/surface_landscape.tscn",
+		"res://world/roots/landing.tscn", "res://world/roots/junction.tscn",
+		"res://world/roots/hollow.tscn", "res://world/roots/seal.tscn",
+		"res://world/interactions/dialogue.gd",
+	]:
+		if not ResourceLoader.exists(required):
+			push_error("Route resource missing from release: " + required)
+			quit(1)
+			return
 	print("Release PCK checked: ", paths.size(), " files, no addons/tests")
 	quit()
 
