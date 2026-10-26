@@ -15,9 +15,8 @@ idle/run/jump/fall, параметры управления и стиль фаз
 
 ## Играть в браузере
 
-Целевой адрес GitHub Pages: **https://cyberapalon.github.io/game2/**.
-Ссылка заработает после первого успешного deploy; Pages должен быть включён
-в Settings → Pages → Source → **GitHub Actions**.
+**[Открыть «Глубину» в браузере](https://cyberapalon.github.io/game2/)**.
+Игра опубликована и доступна по HTTPS.
 
 После обновления `main` GitHub Actions самостоятельно собирает и публикует
 Web-версию. Также доступен ручной запуск workflow **Build and publish Web game**.

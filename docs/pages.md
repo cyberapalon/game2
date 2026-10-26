@@ -1,6 +1,6 @@
 # Игра в GitHub Pages
 
-Целевой адрес после успешной публикации: https://cyberapalon.github.io/game2/.
+Опубликованная игра: https://cyberapalon.github.io/game2/.
 Открывается сама игра, без скачивания ZIP, установки Godot или локального сервера.
 Щёлкните по canvas: A/D или стрелки — движение, Space — прыжок, E — взаимодействие.
 
@@ -31,10 +31,11 @@ checkout имеет только `contents: read`. Дополнительный 
 В репозитории: Settings → Pages → Build and deployment → Source → **GitHub Actions**.
 Это однократная настройка GitHub. Если сайт ещё не включён, configure-pages
 не может самостоятельно создать его с обычным `GITHUB_TOKEN`.
-В текущем сеансе прямое включение через GitHub API получило HTTP 403
-`Resource not accessible by integration`; это ограничение прав интеграции.
-После включения повторяется job публикации или весь workflow; пересобирать
-игру вручную не требуется.
+При первоначальном включении GitHub API вернул HTTP 403
+`Resource not accessible by integration`. Владелец однократно выбрал GitHub Actions
+в настройках Pages; после этого повтор только job публикации прошёл успешно.
+[Первая публикация](https://github.com/cyberapalon/game2/actions/runs/40401282144/attempts/2)
+использовала уже собранный artifact, без повторной сборки.
 
 ## Проверка без GitHub
 
@@ -66,3 +67,14 @@ GODOT_WEB_DIR="$PWD/build/pages-preview" playwright test --config tests/web/page
 
 Проверка после исправления иконки прошла: **1/1 полный Web-маршрут**,
 без unexpected/skipped/flaky; импорт, SHA-512, Web-экспорт и PCK также прошли.
+
+## Проверка опубликованной версии
+
+Первая опубликованная версия: source commit
+`0024f61742a0fb25f613df9e2c79051eb423b7ee`, Godot 4.6.3. HTTPS-запросы к HTML,
+JavaScript, WASM, PCK, worklets и иконке получили 200; SHA-256 всех восьми
+файлов совпали с опубликованным `build-info.json`. Полный маршрут реальными
+клавишами дополнительно проверен на скачанных с Pages файлах, раздаваемых
+из `/game2/` без COOP/COEP. Прямой браузерный HTTPS-прогон из Cloud ограничен
+доверием Chromium к сертификату прокси; HTTP-проверки выполняют обычную
+проверку TLS и контрольных сумм без отключения проверки сертификатов.
