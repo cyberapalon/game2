@@ -15,9 +15,21 @@ async function walk(page, x) {
   const key = sign > 0 ? 'KeyD' : 'KeyA';
   await page.keyboard.down(key);
   try {
-    await poll(page, s => sign * (s.x - x) >= -4);
+    await page.waitForFunction(([target, direction]) => direction * (window.__depthE2E.x - target) >= -4, [x, sign], { polling: 'raf', timeout: 12000 });
   } finally { await page.keyboard.up(key); }
   await poll(page, s => s.vx === 0);
+  // Key-up is delivered over the browser protocol. Correct any overshoot with
+  // real short key presses; a busy renderer must not miss a nearby trigger.
+  for (let attempt = 0; attempt < 10; attempt++) {
+    const error = x - (await state(page)).x;
+    if (Math.abs(error) <= 10) break;
+    const correction = error > 0 ? 'KeyD' : 'KeyA';
+    await page.keyboard.down(correction);
+    try { await page.waitForTimeout(Math.max(16, Math.min(80, Math.abs(error) / 240 * 600))); }
+    finally { await page.keyboard.up(correction); }
+    await poll(page, s => s.vx === 0);
+  }
+  expect(Math.abs((await state(page)).x - x)).toBeLessThanOrEqual(12);
 }
 async function jump(page, x) {
   await poll(page, s => s.grounded);
@@ -29,13 +41,14 @@ async function jump(page, x) {
   try {
     await poll(page, s => !s.grounded);
     expect((await state(page)).depth_km).toBe(depth);
-    await poll(page, s => sign * (s.x - x) >= -4);
+    await page.waitForFunction(([target, direction]) => direction * (window.__depthE2E.x - target) >= -4, [x, sign], { polling: 'raf', timeout: 12000 });
   } finally {
     await page.keyboard.up('Space');
     await page.keyboard.up(key);
   }
   await poll(page, s => s.grounded && s.vx === 0);
   expect((await state(page)).depth_km).toBe(depth);
+  await walk(page, x);
 }
 async function pressE(page) {
   // Separate physical down/up across rendered frames, including slower software WebGL.
@@ -80,17 +93,27 @@ test('complete route: NPC, descent, all Roots rooms, secret, seal, and return', 
   test.setTimeout(180000);
   const errors = [];
   const checkpoints = {};
+  const cancelledPck = [];
   page.on('pageerror', error => errors.push(error.message));
   page.on('console', message => {
     if (message.type() === 'error' || /SCRIPT ERROR:|Parse Error:|^ERROR:/.test(message.text())) { errors.push(message.text()); console.log(message.text()); }
   });
-  page.on('requestfailed', request => errors.push(`${request.url()}: ${request.failure().errorText}`));
+  page.on('requestfailed', request => {
+    const failure = `${request.url()}: ${request.failure().errorText}`;
+    if (request.url().endsWith('/index.pck') && request.failure().errorText === 'net::ERR_ABORTED') cancelledPck.push(failure);
+    else errors.push(failure);
+  });
   const shot = async name => {
     checkpoints[name] = await state(page);
     await page.screenshot({ path: info.outputPath(`${name}.png`) });
   };
   await page.goto('/index.html?e2e=1');
   await poll(page, s => s?.grounded, 45000);
+  // Godot may cancel a redundant PCK fetch. Booted physics plus a complete
+  // validated PCK response distinguish that cancellation from a failed load.
+  const pck = await page.request.get('/index.pck');
+  expect(pck.ok()).toBe(true);
+  expect((await pck.body()).subarray(0, 4).toString()).toBe('GDPC');
   await page.locator('#canvas').click();
   await shot('surface');
   expect((await state(page)).prompt).toBe('');
@@ -180,5 +203,5 @@ test('complete route: NPC, descent, all Roots rooms, secret, seal, and return', 
   await walk(page, 1400);
   expect((await state(page)).vx).toBe(0);
   expect(errors).toEqual([]);
-  fs.writeFileSync(info.outputPath('route-evidence.json'), JSON.stringify({ checkpoints, final: await state(page), errors }, null, 2));
+  fs.writeFileSync(info.outputPath('route-evidence.json'), JSON.stringify({ checkpoints, final: await state(page), errors, cancelledPck }, null, 2));
 });
