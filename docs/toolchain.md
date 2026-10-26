@@ -2,7 +2,8 @@
 
 Состояние проверяется для `/workspace/game2` 26 октября 2026 года.
 До этой настройки репозиторий содержал только `PRD.md`, commit
-`fc47decd87c30d98972de1660eab580829fa23f3`. Проект Godot ещё не создан.
+`fc47decd87c30d98972de1660eab580829fa23f3`. Инициализация проекта выполнена
+следующим этапом; текущие команды — в [README.md](../README.md).
 
 ## Что доступно
 
@@ -11,7 +12,7 @@
 | Cloud OS | Debian 13.6, Linux x86_64 | Текущий runtime; прежний ARM64-ориентир PRD обновлён |
 | Godot standard | `4.6.3.stable.official.7d41c59c4` | Импорт, GDScript, headless editor, экспорт; без .NET |
 | Export templates | `4.6.3.stable` | Web, Linux x86_64, Windows x86_64 debug/release; точное совпадение с движком |
-| GdUnit4 | `6.2.2`, commit `0127a55f4543dfc24746f6e5c7ba6f94105d51f2` | Подготовлен вне checkout; addon в игру пока не добавлен |
+| GdUnit4 | `6.2.2`, commit `0127a55f4543dfc24746f6e5c7ba6f94105d51f2` | Addon подключён в проект из закреплённого архива; исключён из release |
 | Playwright Test | `1.62.1` | Web E2E; установленный package-lock фиксирует transitive dependencies |
 | Chromium | `154.0.8037.57`, `/usr/bin/chromium` | Системный browser, проверяется через executablePath; не bundled Chromium Playwright |
 | Node / npm | `24.19.0` / `11.9.0` | Browser tooling; также удовлетворяет Node ≥22 будущего MCP |
@@ -54,8 +55,9 @@ bash /workspace/.godot-cloud/install.sh
 В текущей задаче переустановка не требуется. Этот скрипт проверяет базовые
 версии, hashes архивов и запускает probe; он не универсален для другой ОС.
 Один clone репозитория на произвольную машину не воспроизводит managed image:
-нужны сохранённая Cloud-конфигурация и её подготовленные helpers. Их публикация
-и восстановление в новой Cloud-задаче в этой сессии не проверены.
+нужны сохранённая Cloud-конфигурация и её подготовленные helpers.
+Восстановление опубликованного snapshot подтверждено в задаче инициализации:
+hashes, версии и полный infrastructure probe прошли без переустановки.
 Если helpers отсутствуют, сначала восстанови окружение; не заменяй их командами
 из случайного community installer. Для переноса на другой образ нужна отдельная
 задача на installer/CI, с теми же pins и проверками.
@@ -64,8 +66,8 @@ bash /workspace/.godot-cloud/install.sh
 
 - `/etc/codex/network-policy.json`: version 1, HTTP policy `unrestricted`,
   VPN не настроен, TCP grants пусты. Сохраняй proxy/CA и TLS verification.
-  Control plane сообщил connected/running, но policy state `unknown`:
-  это не подтверждение enforcement. Чтение GitHub/npm проверено фактическими
+  При инициализации control plane сообщил connected/running, policy state
+  `enforced`. Чтение GitHub/npm проверено фактическими
   HTTPS-запросами; секреты для этой настройки не требовались.
 - Headless Godot использует dummy rendering. Скриншоты и ввод проверяются в
   Web Chromium. WebGL идёт через SwiftShader/ANGLE: функциональное покрытие,

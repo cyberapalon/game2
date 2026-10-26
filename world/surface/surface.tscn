@@ -1,0 +1,84 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://world/surface/surface.gd" id="1"]
+[ext_resource type="PackedScene" path="res://game/player/player.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://ui/depth_hud.tscn" id="3"]
+
+[sub_resource type="RectangleShape2D" id="FloorShape"]
+size = Vector2(1600, 120)
+
+[sub_resource type="RectangleShape2D" id="WallShape"]
+size = Vector2(40, 1000)
+
+[sub_resource type="RectangleShape2D" id="PlatformShape"]
+size = Vector2(180, 24)
+
+[node name="Surface" type="Node2D"]
+script = ExtResource("1")
+
+[node name="Ruins" type="Node2D" parent="."]
+
+[node name="DistantBlocks" type="Polygon2D" parent="Ruins"]
+polygon = PackedVector2Array(80, 420, 80, 280, 155, 280, 155, 300, 210, 300, 210, 420, 540, 420, 540, 240, 610, 255, 640, 230, 680, 250, 680, 420, 1040, 420, 1040, 280, 1130, 250, 1180, 270, 1180, 420, 1500, 420)
+color = Color(0.12, 0.17, 0.2, 1)
+
+[node name="BrokenColumn" type="Polygon2D" parent="Ruins"]
+polygon = PackedVector2Array(760, 420, 760, 300, 780, 292, 805, 310, 805, 420)
+color = Color(0.18, 0.23, 0.25, 1)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(800, 480)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("FloorShape")
+
+[node name="Earth" type="Polygon2D" parent="Floor"]
+polygon = PackedVector2Array(-800, -60, 800, -60, 800, 60, -800, 60)
+color = Color(0.17, 0.21, 0.22, 1)
+
+[node name="SurfaceEdge" type="Line2D" parent="Floor"]
+points = PackedVector2Array(-800, -60, 800, -60)
+width = 3.0
+default_color = Color(0.4, 0.48, 0.46, 1)
+
+[node name="LeftBoundary" type="StaticBody2D" parent="."]
+position = Vector2(-20, 100)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftBoundary"]
+shape = SubResource("WallShape")
+
+[node name="RightBoundary" type="StaticBody2D" parent="."]
+position = Vector2(1620, 100)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightBoundary"]
+shape = SubResource("WallShape")
+
+[node name="RubblePlatform" type="StaticBody2D" parent="."]
+position = Vector2(1010, 354)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RubblePlatform"]
+shape = SubResource("PlatformShape")
+
+[node name="Rubble" type="Polygon2D" parent="RubblePlatform"]
+polygon = PackedVector2Array(-90, -12, 90, -12, 90, 12, -90, 12)
+color = Color(0.37, 0.43, 0.42, 1)
+
+[node name="Player" parent="." instance=ExtResource("2")]
+position = Vector2(320, 398)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2(0, -128)
+limit_left = 0
+limit_top = 0
+limit_right = 1600
+limit_bottom = 540
+
+[node name="DepthHud" parent="." instance=ExtResource("3")]

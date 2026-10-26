@@ -13,7 +13,44 @@ mkdir -p work /workspace/.godot-cloud/build
 check_run_id=$(date -u +%Y%m%dT%H%M%S)-$$
 ```
 
-## Сейчас: только конфигурация
+## Команды текущего проекта
+
+После `source /workspace/.godot-cloud/env.sh`:
+
+```bash
+python3 tools/validate.py unit --suite res://tests/player_test.gd
+python3 tools/validate.py build
+python3 tools/validate.py e2e
+python3 tools/validate.py all
+```
+
+`all` выполняет перечисленные ниже проверки игрового проекта: пересоздаёт
+`.godot/`, проверяет реальный skills loader, все собственные `.gd`, main smoke,
+все GdUnit4 suites, три чистых release-экспорта, содержимое Web PCK, Linux smoke
+и оба Web E2E. `unit`/`build` сначала выполняют импорт; `e2e` использует текущий
+`build/web`. `build` очищает `build/`. Все шаги ограничены timeout, проверяют
+exit code и engine errors. GdUnit XML должен быть свежим и непустым,
+без failures/errors/skipped; Playwright JSON — без unexpected/skipped/flaky.
+
+Восемь GdUnit4 tests покрывают покой на полу, движение/остановку, прыжок/запрет
+прыжка в воздухе/приземление, стены, падение с уступа, независимость глубины,
+InputMap и сброс ввода при потере фокуса. Web E2E проверяет WASM/WebGL2,
+физические координаты после A/D и стрелок, остановку, Space, удержание Space
+до приземления, потерю и возврат фокуса canvas без залипания ввода. Второй
+тест проверяет обычный запуск без E2E bridge. Screenshot не заменяет assertions.
+
+Проектная конфигурация `tests/web/playwright.config.cjs` переиспользует
+подготовленный Cloud config, задаёт viewport 960×540 и сохраняет отчёты в
+`reports/web/`. URL `?e2e=1` включает только чтение фактической физики через
+`window.__depthE2E`, без команд для симуляции управления.
+
+Логи: `reports/validation-*`; XML: `reports/gdunit-*`; browser JSON/screenshots:
+`reports/web/`; commit/версии/команды/hashes: `build/manifest.json`.
+Скриншоты и артефакты не коммитятся. Ручные критерии: читаемость HUD и героя,
+ощущение прыжка, скорость, комфорт камеры на реальном устройстве. Windows
+runtime и другие браузеры требуют отдельного устройства/прогона.
+
+## Исторический baseline: только конфигурация
 
 Во время правки навыков:
 
@@ -49,11 +86,11 @@ probe не проверяется. Результаты и логи:
 `/workspace/.godot-cloud/validation/results.json` и соседние файлы.
 Это полный набор для **инфраструктуры**, не тесты «Глубины».
 
-## После отдельной инициализации Godot-проекта
+## Проверки игрового проекта
 
-Предусловия: существует `project.godot` с main scene, свои `.gd`,
-подключён закреплённый GdUnit4, есть `tests/` и Web preset в
-`export_presets.cfg`. Не создавай их попутно с документацией.
+В проекте существуют `project.godot` с main scene, свои `.gd`,
+подключён закреплённый GdUnit4, есть `tests/` и три пресета в
+`export_presets.cfg`.
 
 Для маленькой итерации сначала импорт, затем затронутый скрипт:
 
@@ -63,7 +100,7 @@ timeout 180 godot --headless --editor --path . --import
 timeout 60 godot --headless --path . --check-only --script res://game/player/player.gd
 ```
 
-Затем связанная suite (пример пути, не существующий сейчас файл):
+Затем связанная suite:
 
 ```bash
 timeout 120 godot --headless --path . \
@@ -79,7 +116,7 @@ skipped явно объясняются. Не используй отчёт пр
 Не вызывай GdUnit4 из `.godot-cloud` как будто он уже установлен в игру.
 
 Для изменения ввода/UI/анимаций добавь связанные Web E2E после экспорта.
-Сами тесты создаются вместе с соответствующим поведением; сейчас их в игре нет.
+Проектные tests уже находятся в `tests/player_test.gd` и `tests/web/`.
 
 ## Полный набор перед завершением игровой задачи
 
@@ -134,7 +171,7 @@ E2E должны проверять canvas, отсутствие page/engine err
 
 ## Дополнительные native-пресеты
 
-Когда пресеты появятся в проекте:
+В проекте настроены пресеты Windows и Linux:
 
 ```bash
 mkdir -p "$check_build_dir/windows" "$check_build_dir/linux"
