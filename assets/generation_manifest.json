@@ -1,0 +1,232 @@
+{
+  "style": "Ash and Porcelain",
+  "generator": "Built-in ChatGPT image generator",
+  "reference": "User-selected concept 1; original AI image",
+  "inputs": [
+    {
+      "path": "assets/source/effects.png",
+      "bytes": 1245327,
+      "sha256": "bb5cb73b7ccaeb6089c31423b70b353aacb060b9b17b560a2213ba11f2361b0a",
+      "dimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "assets/source/ground.png",
+      "bytes": 2403930,
+      "sha256": "822888388ec6d9aceac1c9d0837089384830a8394f9471cdb79dacbe7e0c4937",
+      "dimensions": [
+        2172,
+        724
+      ]
+    },
+    {
+      "path": "assets/source/terrain.png",
+      "bytes": 3460314,
+      "sha256": "3861e2a88f50ddcb7711c161ddd2ae3e8b1f942b4ef5cca31364b677fe2cd61b",
+      "dimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "assets/source/wanderer.png",
+      "bytes": 1774902,
+      "sha256": "3a2b57165a078ea54d1a6e5528b2a6a837180763ce6d8e1e080fac5190dc893e",
+      "dimensions": [
+        1122,
+        1402
+      ]
+    },
+    {
+      "path": "assets/backgrounds/foreground.png",
+      "bytes": 982812,
+      "sha256": "654eb11c79d7da501ffa0af68a2304518f52199fb603692e3c6337e9be704fb8",
+      "dimensions": [
+        2172,
+        724
+      ]
+    },
+    {
+      "path": "assets/backgrounds/roots.png",
+      "bytes": 2584453,
+      "sha256": "4afbc364c4b367f515d73e0122ac225a46421c7023a2a72747d012fe209ba92d",
+      "dimensions": [
+        2172,
+        724
+      ]
+    },
+    {
+      "path": "assets/backgrounds/skyline.png",
+      "bytes": 2477221,
+      "sha256": "e1d1a891ce63df2a2da09a0d2a85d217045c5ab394c7c7ac0ff1b588494c0027",
+      "dimensions": [
+        2172,
+        724
+      ]
+    },
+    {
+      "path": "assets/reference/ash_and_porcelain.png",
+      "bytes": 2766974,
+      "sha256": "26945248710fd05a2765a258306bd8da2b03ba07d5f6bb52e1ccb7ee0902cea5",
+      "dimensions": [
+        1672,
+        941
+      ]
+    }
+  ],
+  "derivatives": [
+    {
+      "path": "assets/characters/wanderer_atlas.png",
+      "bytes": 707339,
+      "sha256": "7d8bd2882ae4563fae2fb9ac3f991637fe2df01a7d9d6c4969be4fd02004372f",
+      "dimensions": [
+        512,
+        640
+      ]
+    },
+    {
+      "path": "assets/environment/culvert.png",
+      "bytes": 130110,
+      "sha256": "6de82e72e80d4d6cef34556378c1a13f3c49c0aaf40d677c2a90c7dcc897589e",
+      "dimensions": [
+        256,
+        256
+      ]
+    },
+    {
+      "path": "assets/environment/fern.png",
+      "bytes": 122803,
+      "sha256": "d1b9ea6388730022450483b13fb7ca34cfd1342ecf75b63c626a1835de2b5aed",
+      "dimensions": [
+        256,
+        256
+      ]
+    },
+    {
+      "path": "assets/environment/ground.png",
+      "bytes": 549342,
+      "sha256": "44276a2608a67da69ba2ed64ed4097aa3aa036b5691e5d2cbb3b7f532803c42a",
+      "dimensions": [
+        1600,
+        140
+      ]
+    },
+    {
+      "path": "assets/environment/hanging_roots.png",
+      "bytes": 134820,
+      "sha256": "df6bd1c4bec622868bec05809e202534a8e8b38943d3c29e4c6b4f8d9ef23f7a",
+      "dimensions": [
+        256,
+        256
+      ]
+    },
+    {
+      "path": "assets/environment/mushrooms.png",
+      "bytes": 95647,
+      "sha256": "dbbb862a2ae669c15cbb45ca90fffa90a96b4204f3bba60c7f5fe4ac22aa84b8",
+      "dimensions": [
+        256,
+        256
+      ]
+    },
+    {
+      "path": "assets/environment/rubble.png",
+      "bytes": 38732,
+      "sha256": "85c442dd4cba624732ea45412a7ee1a2026cad077285fff79424234d6e23b798",
+      "dimensions": [
+        180,
+        78
+      ]
+    },
+    {
+      "path": "assets/environment/sap_light.png",
+      "bytes": 118749,
+      "sha256": "970ea2d356a8dd519ea54222a3701eed58cc851d1c4458a787c40019e6672f52",
+      "dimensions": [
+        256,
+        256
+      ]
+    },
+    {
+      "path": "assets/environment/slab.png",
+      "bytes": 94125,
+      "sha256": "66b3494796259581dab89dffd0148bbb74501cf5d8cb0dd5806722a491823f86",
+      "dimensions": [
+        256,
+        256
+      ]
+    },
+    {
+      "path": "assets/environment/sleepers.png",
+      "bytes": 88064,
+      "sha256": "f4cf32064de1ec660657f6244f6e693dbe098838eb9c91cddba8d6d94fc17066",
+      "dimensions": [
+        256,
+        256
+      ]
+    },
+    {
+      "path": "assets/environment/terrain_atlas.png",
+      "bytes": 86235,
+      "sha256": "53197920a1f97b5d29f202bc0ab11867cef72e137ac13c9c799edb53f3f49947",
+      "dimensions": [
+        256,
+        128
+      ]
+    },
+    {
+      "path": "assets/environment/terrain_tileset.tres",
+      "bytes": 414,
+      "sha256": "01076413574eb83ecd2373b44d231cf0a476f581192db480f7fa27070ec04c38"
+    },
+    {
+      "path": "assets/environment/utility_post.png",
+      "bytes": 93494,
+      "sha256": "ef78e7db6b707aa2baa2e65d6b02d43bf18a941f7fd0aa605172cc42643e38b6",
+      "dimensions": [
+        256,
+        256
+      ]
+    },
+    {
+      "path": "assets/vfx/ash.png",
+      "bytes": 269,
+      "sha256": "cd1b2f4a9da3b615669344da9891ec1486f0e8ebcc423130022d68df6a301086",
+      "dimensions": [
+        20,
+        20
+      ]
+    },
+    {
+      "path": "assets/vfx/dust_frames.tres",
+      "bytes": 1715,
+      "sha256": "457e19b9ece4ad49d9df3273ba340c928f3b2c0032a8f0c88ca3c2350d10d500"
+    },
+    {
+      "path": "assets/vfx/effects_atlas.png",
+      "bytes": 264716,
+      "sha256": "1e695a238612446a681012494ed4ff8a551ab24157cf09800b13dd613ecbca47",
+      "dimensions": [
+        512,
+        256
+      ]
+    },
+    {
+      "path": "assets/vfx/mist.png",
+      "bytes": 107936,
+      "sha256": "4f7b742857b2ce60fcac2369f91562d828be0b0bd66e3d133af44373e6261b92",
+      "dimensions": [
+        314,
+        313
+      ]
+    },
+    {
+      "path": "game/player/player_frames.tres",
+      "bytes": 3979,
+      "sha256": "0331ce043d6f7c16dd82c65b64eab3b0296a685d12a5a49da2eaadf087740f0e"
+    }
+  ],
+  "integration": "ImageMagick mechanical crop, resize, translation and atlas packing only"
+}

@@ -17,7 +17,7 @@ func show_depth(depth_km: float) -> void:
 func show_room(title: String, depth_km: float) -> void:
 	room_label.text = title
 	show_depth(depth_km)
-	$Chapter.text = "ПРОЛОГ / 01\nПЕПЕЛЬНЫЙ ПРИЛИВ" if is_zero_approx(depth_km) else "КОРНИ / 02\nПАМЯТЬ ПОЧВЫ"
+	$Chapter.text = "ПРОЛОГ / 01\nПЕПЕЛ И ФАРФОР" if is_zero_approx(depth_km) else "КОРНИ / 02\nПАМЯТЬ ПОЧВЫ"
 
 
 func show_prompt(text: String) -> void:

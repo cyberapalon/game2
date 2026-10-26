@@ -18,7 +18,8 @@ shape = SubResource("BodyShape")
 
 [node name="Visual" type="AnimatedSprite2D" parent="."]
 texture_filter = 2
-scale = Vector2(0.5, 0.5)
+position = Vector2(0, -4.4)
+scale = Vector2(0.6, 0.6)
 sprite_frames = ExtResource("3")
 animation = &"idle"
 autoplay = "idle"

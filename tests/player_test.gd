@@ -172,7 +172,7 @@ func test_jump_from_ground_reaches_existing_rubble() -> void:
 
 func test_art_frames_import_with_consistent_canvas_and_collision() -> void:
 	var visual: AnimatedSprite2D = _player.get_node("Visual")
-	var expected: Dictionary[StringName, int] = {&"idle": 6, &"run": 8, &"jump": 2, &"fall": 2}
+	var expected: Dictionary[StringName, int] = {&"idle": 4, &"run": 8, &"jump": 4, &"fall": 4}
 	for clip: StringName in expected:
 		assert_int(visual.sprite_frames.get_frame_count(clip)).is_equal(expected[clip])
 		for frame: int in expected[clip]:

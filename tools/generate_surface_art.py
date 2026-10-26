@@ -125,4 +125,6 @@ def main():
 
 
 if __name__ == '__main__':
+    if (ROOT / 'assets/source/wanderer.png').exists():
+        raise SystemExit('Historical SVG generator would overwrite the approved PNG animation. Use tools/build_art_resources.py.')
     main()

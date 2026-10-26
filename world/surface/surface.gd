@@ -172,6 +172,11 @@ func _publish_web_state(trigger: Area2D) -> void:
 		"prompt": hud.prompt_label.text,
 		"animation": player.visual.animation, "frame": player.visual.frame,
 		"facing_left": player.visual.flip_h,
+		"audio_started": $Presentation.started,
+		"audio_muted": $Presentation.muted,
+		"ambience_playing": $Presentation/Ambience.playing,
+		"step_count": $Presentation.step_count,
+		"land_count": $Presentation.land_count,
 	}
 	if room.room_id == &"surface":
 		state["background_screen_x"] = room.get_node("Sky/Panorama").get_global_transform_with_canvas().origin.x
