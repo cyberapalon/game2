@@ -5,5 +5,5 @@
 [resource]
 script = ExtResource("1")
 move_speed = 240.0
-jump_speed = 460.0
+jump_speed = 500.0
 gravity = 1400.0

@@ -1,0 +1,28 @@
+[gd_resource type="SpriteFrames" load_steps=19 format=3]
+
+[ext_resource type="Texture2D" path="res://game/player/art/idle_00.svg" id="idle_0"]
+[ext_resource type="Texture2D" path="res://game/player/art/idle_01.svg" id="idle_1"]
+[ext_resource type="Texture2D" path="res://game/player/art/idle_02.svg" id="idle_2"]
+[ext_resource type="Texture2D" path="res://game/player/art/idle_03.svg" id="idle_3"]
+[ext_resource type="Texture2D" path="res://game/player/art/idle_04.svg" id="idle_4"]
+[ext_resource type="Texture2D" path="res://game/player/art/idle_05.svg" id="idle_5"]
+[ext_resource type="Texture2D" path="res://game/player/art/run_00.svg" id="run_0"]
+[ext_resource type="Texture2D" path="res://game/player/art/run_01.svg" id="run_1"]
+[ext_resource type="Texture2D" path="res://game/player/art/run_02.svg" id="run_2"]
+[ext_resource type="Texture2D" path="res://game/player/art/run_03.svg" id="run_3"]
+[ext_resource type="Texture2D" path="res://game/player/art/run_04.svg" id="run_4"]
+[ext_resource type="Texture2D" path="res://game/player/art/run_05.svg" id="run_5"]
+[ext_resource type="Texture2D" path="res://game/player/art/run_06.svg" id="run_6"]
+[ext_resource type="Texture2D" path="res://game/player/art/run_07.svg" id="run_7"]
+[ext_resource type="Texture2D" path="res://game/player/art/jump_00.svg" id="jump_0"]
+[ext_resource type="Texture2D" path="res://game/player/art/jump_01.svg" id="jump_1"]
+[ext_resource type="Texture2D" path="res://game/player/art/fall_00.svg" id="fall_0"]
+[ext_resource type="Texture2D" path="res://game/player/art/fall_01.svg" id="fall_1"]
+
+[resource]
+animations = [
+{"frames": [{"duration": 1.0, "texture": ExtResource("idle_0")}, {"duration": 1.0, "texture": ExtResource("idle_1")}, {"duration": 1.0, "texture": ExtResource("idle_2")}, {"duration": 1.0, "texture": ExtResource("idle_3")}, {"duration": 1.0, "texture": ExtResource("idle_4")}, {"duration": 1.0, "texture": ExtResource("idle_5")}], "loop": true, "name": &"idle", "speed": 6.0},
+{"frames": [{"duration": 1.0, "texture": ExtResource("run_0")}, {"duration": 1.0, "texture": ExtResource("run_1")}, {"duration": 1.0, "texture": ExtResource("run_2")}, {"duration": 1.0, "texture": ExtResource("run_3")}, {"duration": 1.0, "texture": ExtResource("run_4")}, {"duration": 1.0, "texture": ExtResource("run_5")}, {"duration": 1.0, "texture": ExtResource("run_6")}, {"duration": 1.0, "texture": ExtResource("run_7")}], "loop": true, "name": &"run", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": ExtResource("jump_0")}, {"duration": 1.0, "texture": ExtResource("jump_1")}], "loop": true, "name": &"jump", "speed": 6.0},
+{"frames": [{"duration": 1.0, "texture": ExtResource("fall_0")}, {"duration": 1.0, "texture": ExtResource("fall_1")}], "loop": true, "name": &"fall", "speed": 6.0}
+]

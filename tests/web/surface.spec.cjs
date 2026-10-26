@@ -36,6 +36,8 @@ test('Web surface receives keyboard input, moves, jumps, lands and releases focu
   await canvas.click();
   await expect(canvas).toBeFocused();
   checkpoints.spawn = await state(page);
+  expect(checkpoints.spawn.animation).toBe('idle');
+  await page.screenshot({ path: testInfo.outputPath('idle.png') });
   expect(checkpoints.spawn.screen_y).toBeGreaterThan(22);
   expect(checkpoints.spawn.screen_y).toBeLessThan(440);
 
@@ -45,6 +47,10 @@ test('Web surface receives keyboard input, moves, jumps, lands and releases focu
     await page.keyboard.down(key);
     try {
       await expect.poll(async () => sign * ((await state(page)).x - before.x)).toBeGreaterThan(45);
+      const moving = await state(page);
+      expect(moving.animation).toBe('run');
+      expect(moving.facing_left).toBe(sign < 0);
+      if (key === 'KeyD') await page.screenshot({ path: testInfo.outputPath('run.png') });
     } finally {
       await page.keyboard.up(key);
     }
@@ -56,14 +62,35 @@ test('Web surface receives keyboard input, moves, jumps, lands and releases focu
   }
 
   const floor = await state(page);
+  // Observe the complete flight while screenshot encoding runs. On software
+  // WebGL a screenshot may take longer than the remaining airborne time.
+  const flight = page.evaluate(async () => {
+    const poses = new Set();
+    let minY = Infinity;
+    const deadline = performance.now() + 10000;
+    while (performance.now() < deadline) {
+      const s = window.__depthE2E;
+      if (s) {
+        poses.add(s.animation);
+        minY = Math.min(minY, s.y);
+        if (s.grounded && poses.has('jump')) return { poses: [...poses], minY };
+      }
+      await new Promise(requestAnimationFrame);
+    }
+    throw new Error('Jump observation timed out');
+  });
   await page.keyboard.down('Space');
   try {
     await expect.poll(async () => floor.y - (await state(page)).y, { intervals: [16] }).toBeGreaterThan(25);
     checkpoints.airborne = await state(page);
+    expect(checkpoints.airborne.animation).toBe('jump');
     expect(checkpoints.airborne.grounded).toBe(false);
     expect(checkpoints.airborne.vy).toBeLessThan(0);
     expect(checkpoints.airborne.depth_text).toBe('Глубина: 0.00 км');
     await page.screenshot({ path: testInfo.outputPath('jump.png') });
+    checkpoints.flight = await flight;
+    expect(checkpoints.flight.poses).toEqual(expect.arrayContaining(['jump', 'fall']));
+    expect(floor.y - checkpoints.flight.minY).toBeGreaterThan(88);
     // Holding Space through landing must not start another jump.
     await expect.poll(async () => (await state(page)).grounded, { intervals: [16] }).toBe(true);
     await frames(page, 20);
@@ -114,6 +141,59 @@ test('Web surface receives keyboard input, moves, jumps, lands and releases focu
   fs.writeFileSync(testInfo.outputPath('evidence.json'), JSON.stringify({
     chromium: context.browser().version(), gl, checkpoints, errors,
   }, null, 2));
+});
+
+test('rubble is reachable and the complete surface keeps readable parallax', async ({ page }, testInfo) => {
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  page.on('console', message => {
+    if (message.type() === 'error' || /SCRIPT ERROR:|Parse Error:|^ERROR:/.test(message.text())) errors.push(message.text());
+  });
+  await page.goto('/index.html?e2e=1');
+  await expect.poll(async () => (await state(page))?.grounded, { timeout: 45000 }).toBe(true);
+  await page.locator('#canvas').click();
+  const spawn = await state(page);
+  await page.keyboard.down('KeyD');
+  try {
+    await expect.poll(async () => (await state(page)).x, { intervals: [16] }).toBeGreaterThan(870);
+  } finally {
+    await page.keyboard.up('KeyD');
+  }
+  await expect.poll(async () => (await state(page)).vx).toBe(0);
+  await page.keyboard.down('Space');
+  await page.keyboard.down('KeyD');
+  try {
+    await expect.poll(async () => (await state(page)).x, { intervals: [16] }).toBeGreaterThan(960);
+  } finally {
+    await page.keyboard.up('Space');
+    await page.keyboard.up('KeyD');
+  }
+  await expect.poll(async () => (await state(page)).grounded, { intervals: [16] }).toBe(true);
+  const ledge = await state(page);
+  expect(Math.abs(ledge.y - 320)).toBeLessThan(0.5);
+  expect(ledge.animation).toBe('idle');
+  await page.screenshot({ path: testInfo.outputPath('rubble.png') });
+
+  await page.keyboard.down('KeyD');
+  try {
+    await expect.poll(async () => (await state(page)).x, { intervals: [16] }).toBeGreaterThan(1587);
+  } finally {
+    await page.keyboard.up('KeyD');
+  }
+  await expect.poll(async () => (await state(page)).vx).toBe(0);
+  await frames(page, 3);
+  const end = await state(page);
+  expect(end.y).toBeCloseTo(398, 0);
+  expect(end.screen_x).toBeGreaterThan(20);
+  expect(end.screen_x).toBeLessThan(950);
+  const shift = key => Math.abs(end[key] - spawn[key]);
+  expect(shift('background_screen_x')).toBeGreaterThan(100);
+  expect(shift('background_screen_x')).toBeLessThan(shift('ruins_screen_x'));
+  expect(shift('ruins_screen_x')).toBeLessThan(shift('foreground_screen_x'));
+  expect(end.depth_text).toBe('Глубина: 0.00 км');
+  await page.screenshot({ path: testInfo.outputPath('ruins.png') });
+  expect(errors).toEqual([]);
+  fs.writeFileSync(testInfo.outputPath('route.json'), JSON.stringify({ spawn, ledge, end, errors }, null, 2));
 });
 
 test('ordinary Web launch works without exposing E2E state', async ({ page }) => {

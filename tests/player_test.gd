@@ -120,6 +120,68 @@ func test_input_map_has_physical_keyboard_bindings() -> void:
 			assert_bool(keys.has(key)).is_true()
 
 
+func test_visual_keeps_facing_when_stopped_and_animates_in_place() -> void:
+	var visual: AnimatedSprite2D = _player.get_node("Visual")
+	var initial_position: Vector2 = _player.position
+	assert_str(visual.animation).is_equal("idle")
+	var initial_frame: int = visual.frame
+	await _frames(15)
+	assert_int(visual.frame).is_not_equal(initial_frame)
+	assert_vector(_player.position).is_equal(initial_position)
+	Input.action_press("move_left")
+	await _frames(4)
+	assert_str(visual.animation).is_equal("run")
+	assert_bool(visual.flip_h).is_true()
+	Input.action_release("move_left")
+	await _frames(3)
+	assert_str(visual.animation).is_equal("idle")
+	assert_bool(visual.flip_h).is_true()
+	Input.action_press("move_right")
+	await _frames(3)
+	assert_bool(visual.flip_h).is_false()
+
+
+func test_visual_follows_ascent_fall_and_landing() -> void:
+	var visual: AnimatedSprite2D = _player.get_node("Visual")
+	Input.action_press("jump")
+	await _frames(6)
+	Input.action_release("jump")
+	assert_str(visual.animation).is_equal("jump")
+	assert_float(_player.velocity.y).is_less(0.0)
+	await _frames(18)
+	assert_str(visual.animation).is_equal("fall")
+	assert_float(_player.velocity.y).is_greater(0.0)
+	await _frames(35)
+	assert_str(visual.animation).is_equal("idle")
+	assert_bool(_player.is_on_floor()).is_true()
+	assert_float(_player.position.y).is_equal_approx(398.0, 0.2)
+
+
+func test_jump_from_ground_reaches_existing_rubble() -> void:
+	_player.position = Vector2(880, 398)
+	await _frames(3)
+	Input.action_press("move_right")
+	Input.action_press("jump")
+	await _frames(20)
+	Input.action_release("move_right")
+	Input.action_release("jump")
+	await _frames(35)
+	assert_bool(_player.is_on_floor()).is_true()
+	assert_float(_player.position.y).is_equal_approx(320.0, 0.2)
+
+
+func test_art_frames_import_with_consistent_canvas_and_collision() -> void:
+	var visual: AnimatedSprite2D = _player.get_node("Visual")
+	var expected: Dictionary[StringName, int] = {&"idle": 6, &"run": 8, &"jump": 2, &"fall": 2}
+	for clip: StringName in expected:
+		assert_int(visual.sprite_frames.get_frame_count(clip)).is_equal(expected[clip])
+		for frame: int in expected[clip]:
+			var texture: Texture2D = visual.sprite_frames.get_frame_texture(clip, frame)
+			assert_vector(texture.get_size()).is_equal(Vector2(128, 128))
+	var collider: CollisionShape2D = _player.get_node("CollisionShape2D")
+	assert_vector(collider.shape.size).is_equal(Vector2(24, 44))
+
+
 func _frames(count: int) -> void:
 	for frame: int in count:
 		await get_tree().physics_frame
