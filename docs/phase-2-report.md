@@ -43,7 +43,11 @@ python3 tools/validate.py all
 main smoke, 12 GdUnit4 tests, чистые Web/Windows/Linux release-экспорты,
 проверка содержимого PCK, Linux smoke и 3 Web E2E. Все выполняются с
 закреплёнными версиями; свежие XML/JSON, engine logs и exit codes проверяются.
-Финальные результаты и source commit сборки фиксируются после последнего прогона.
+Финальный прогон `20261026T180506504128Z` прошёл: **12/12 GdUnit4** и
+**3/3 Web E2E**, без failures/errors/skipped/flaky. Skills loader, импорт,
+GDScript, smoke, все экспорты и PCK также прошли. Source commit сборки:
+`0e18ee254767cfc094f2af93a7f9fbe39ee4c4ce`, checkout при сборке чистый.
+Последующий коммит обновляет только документацию и статус задач.
 
 Web E2E проверяет WASM/WebGL2 960×540, A/D и стрелки, остановку, сохранение
 направления, jump/fall/landing, удержание Space, потерю/возврат фокуса,
@@ -52,8 +56,18 @@ Web E2E проверяет WASM/WebGL2 960×540, A/D и стрелки, оста
 
 ## Как открыть и поиграть
 
-Готовый Web-архив и скриншоты приложены к результату задачи Codex.
-Распакуй архив, открой терминал в папке `depth-web`, выполни `python3 play.py`
+В Cloud готовый архив находится в `work/review-output/depth-phase-2-web.zip`,
+скриншоты idle/run/jump/rubble/ruins и `verification.json` — рядом.
+Размер архива — 11 487 337 байт, SHA-256:
+`7c71e798358feede79ae3a4240f720523c6d4b9979a1b6225a782850c86392f5`.
+Содержимое сверено с manifest, архив проверен и распакован; его `play.py`
+проверен HTTP-запросами к HTML и WASM с правильным MIME/magic.
+Сборки и screenshots не коммитятся. Системный каталог выдачи вложений
+`/codex/browser/projectless/.../output` в выбранном Cloud отсутствует и
+недоступен для создания; сами результаты сохранены в указанном `work/`.
+
+Перенеси архив на свой компьютер, распакуй его, открой терминал в папке
+`depth-web`, выполни `python3 play.py`
 (на Windows: `py play.py`) и открой `http://127.0.0.1:8765/index.html`.
 Python нужен только для локального HTTP-сервера; игра выполняется в браузере.
 Щёлкни по canvas: A/D или ←/→ — движение, Space — прыжок. Остановка сервера:
