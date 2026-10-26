@@ -188,3 +188,30 @@ Windows на Linux: `application/modify_resources=false`, `codesign/enable=false
 Wine, rcedit, подпись и запуск на Windows не входят в этот workflow.
 Для отчёта также сохрани `git rev-parse HEAD`, `godot --version`, preset/options
 и сведения о локальных изменениях, если сборка сделана не из чистого commit.
+
+## Маршрут фазы 3
+
+`tests/route_test.gd` добавляет 7 scene/logic tests к 12 тестам контроллера.
+Целевая команда: `python3 tools/validate.py unit --suite res://tests/route_test.gd`.
+`tests/web/route.spec.cjs` — четвёртый Web E2E: весь маршрут и секрет,
+восемь переходов, возврат на поверхность, спавны, блокировка/возврат ввода,
+удержание E и физически закрытый проход. Запуск отдельно после Web-экспорта:
+
+```bash
+GODOT_WEB_DIR="$PWD/build/web" playwright test --config tests/web/playwright.config.cjs route.spec.cjs
+```
+
+Финальный `all` включает 19 GdUnit4 tests и 4 Web E2E. Все комнаты явно
+включены в export presets; проверка PCK требует комнаты и диалог.
+`reports/` и `build/` получают `.gdignore`, чтобы Godot не импортировал
+скриншоты предыдущих прогонов. Сборку после успешного `all` упаковывает
+`python3 tools/package_web.py`: Web ZIP с локальным запускателем, отдельный
+ZIP скриншотов, verification и SHA-256. Доступ игроку должен предоставляться через вложения GitHub или другой
+канал выдачи, а не Cloud-loopback/внутренний путь. В текущем запуске
+загрузка вложений заблокирована 401 от `uploads.github.com`; см. отчёт фазы 3.
+
+Если полный прогон выявил сбой отдельного шага, исправленный шаг повторяется
+отдельно; его свежие результаты и исходные логи сохраняются. В такой ситуации
+упаковщик принимает `--verification work/verification.json` с объединёнными
+данными обоих запусков. В отчёте явно указывается первый неуспешный шаг;
+объединённый результат не выдаётся за успешный exit всего `all`.

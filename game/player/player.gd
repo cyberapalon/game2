@@ -5,8 +5,12 @@ extends CharacterBody2D
 
 @onready var visual: AnimatedSprite2D = $Visual
 
+var control_locked: bool = false
+
 
 func _physics_process(delta: float) -> void:
+	if control_locked:
+		return
 	velocity.x = Input.get_axis("move_left", "move_right") * settings.move_speed
 	if not is_on_floor():
 		velocity.y += settings.gravity * delta
@@ -14,6 +18,13 @@ func _physics_process(delta: float) -> void:
 		velocity.y = -settings.jump_speed
 	move_and_slide()
 	_update_visual()
+
+
+func set_control_locked(locked: bool) -> void:
+	control_locked = locked
+	velocity = Vector2.ZERO
+	if locked:
+		visual.play(&"idle")
 
 
 func _update_visual() -> void:
@@ -31,5 +42,5 @@ func _update_visual() -> void:
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_WINDOW_FOCUS_OUT or what == NOTIFICATION_APPLICATION_FOCUS_OUT:
 		# A lost key-up must not leave the character moving after tab switching.
-		for action: StringName in [&"move_left", &"move_right", &"jump"]:
+		for action: StringName in [&"move_left", &"move_right", &"jump", &"interact"]:
 			Input.action_release(action)

@@ -9,13 +9,18 @@ const frames = (page, count = 12) => page.evaluate(async n => {
 test('Web surface receives keyboard input, moves, jumps, lands and releases focus', async ({ page, context }, testInfo) => {
   const errors = [];
   const checkpoints = {};
+  const cancelledPck = [];
   page.on('console', message => {
     if (message.type() === 'error' || /SCRIPT ERROR:|Parse Error:|^ERROR:/.test(message.text())) {
       errors.push(message.text());
     }
   });
   page.on('pageerror', error => errors.push(error.message));
-  page.on('requestfailed', request => errors.push(`${request.url()}: ${request.failure().errorText}`));
+  page.on('requestfailed', request => {
+    const failure = `${request.url()}: ${request.failure().errorText}`;
+    if (request.url().endsWith('/index.pck') && request.failure().errorText === 'net::ERR_ABORTED') cancelledPck.push(failure);
+    else errors.push(failure);
+  });
 
   const response = await page.goto('/index.html?e2e=1');
   expect(response.ok()).toBeTruthy();
@@ -23,6 +28,11 @@ test('Web surface receives keyboard input, moves, jumps, lands and releases focu
   expect(wasm.ok()).toBeTruthy();
   expect(wasm.headers()['content-type']).toContain('application/wasm');
   await expect.poll(async () => (await state(page))?.grounded, { timeout: 45000 }).toBe(true);
+  // A redundant fetch may be cancelled by Godot after boot. Require the real
+  // game state and a complete PCK with its magic, while retaining cancellation evidence.
+  const pck = await page.request.get('/index.pck');
+  expect(pck.ok()).toBe(true);
+  expect((await pck.body()).subarray(0, 4).toString()).toBe('GDPC');
 
   const canvas = page.locator('#canvas');
   await expect(canvas).toBeVisible();
@@ -139,7 +149,7 @@ test('Web surface receives keyboard input, moves, jumps, lands and releases focu
   await page.screenshot({ path: testInfo.outputPath('surface.png') });
   expect(errors).toEqual([]);
   fs.writeFileSync(testInfo.outputPath('evidence.json'), JSON.stringify({
-    chromium: context.browser().version(), gl, checkpoints, errors,
+    chromium: context.browser().version(), gl, checkpoints, errors, cancelledPck,
   }, null, 2));
 });
 
