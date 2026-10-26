@@ -1,5 +1,6 @@
 const fs = require('node:fs');
 const { test, expect } = require('/workspace/.godot-cloud/tools/browser/node_modules/@playwright/test');
+const gamePath = process.env.GODOT_WEB_BASE_PATH || '';
 const state = page => page.evaluate(() => window.__depthE2E);
 const poll = async (page, predicate, timeout = 12000) => {
   try {
@@ -107,11 +108,12 @@ test('complete route: NPC, descent, all Roots rooms, secret, seal, and return', 
     checkpoints[name] = await state(page);
     await page.screenshot({ path: info.outputPath(`${name}.png`) });
   };
-  await page.goto('/index.html?e2e=1');
+  await page.goto(`${gamePath}/index.html?e2e=1`);
+  if (gamePath) expect(await page.evaluate(() => crossOriginIsolated)).toBe(false);
   await poll(page, s => s?.grounded, 45000);
   // Godot may cancel a redundant PCK fetch. Booted physics plus a complete
   // validated PCK response distinguish that cancellation from a failed load.
-  const pck = await page.request.get('/index.pck');
+  const pck = await page.request.get(`${gamePath}/index.pck`);
   expect(pck.ok()).toBe(true);
   expect((await pck.body()).subarray(0, 4).toString()).toBe('GDPC');
   await page.locator('#canvas').click();
