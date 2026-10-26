@@ -30,5 +30,11 @@ func _physics_process(_delta: float) -> void:
 			"grounded": player.is_on_floor(),
 			"depth_km": SURFACE_DEPTH_KM,
 			"depth_text": hud.depth_label.text,
+			"animation": player.visual.animation,
+			"frame": player.visual.frame,
+			"facing_left": player.visual.flip_h,
+			"background_screen_x": $Sky/Panorama.get_global_transform_with_canvas().origin.x,
+			"ruins_screen_x": $Ruins/Architecture.get_global_transform_with_canvas().origin.x,
+			"foreground_screen_x": $Foreground/Debris.get_global_transform_with_canvas().origin.x,
 		}
 		JavaScriptBridge.eval("window.__depthE2E = " + JSON.stringify(state))
