@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://game/player/player.gd" id="1"]
 [ext_resource type="Resource" path="res://game/player/player_settings.tres" id="2"]
-[ext_resource type="SpriteFrames" path="res://game/player/player_frames.tres" id="3"]
+[ext_resource type="PackedScene" path="res://game/player/wanderer_visual.tscn" id="3"]
 
 [sub_resource type="RectangleShape2D" id="BodyShape"]
 size = Vector2(24, 44)
@@ -16,10 +16,4 @@ settings = ExtResource("2")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("BodyShape")
 
-[node name="Visual" type="AnimatedSprite2D" parent="."]
-texture_filter = 2
-position = Vector2(0, -4.4)
-scale = Vector2(0.6, 0.6)
-sprite_frames = ExtResource("3")
-animation = &"idle"
-autoplay = "idle"
+[node name="Visual" parent="." instance=ExtResource("3")]

@@ -1,39 +1,59 @@
 # Asset provenance
 
-The user selected original concept 1, Ash and Porcelain, for «Глубина».
-Seven production source PNGs were generated with the built-in ChatGPT image
-generator using that generated concept as the sole image reference. No stock
-packs, external franchise artwork, external asset API, or paid asset service
-was used. The reference concept is retained in assets/reference.
+Ash and Porcelain is the original direction selected by the user for «Глубина».
+All active game artwork uses original AI-generated PNG sources. No stock pack,
+external franchise artwork, paid asset service, or separate generation API is used.
+The only image reference is the retained original selected concept.
 
-| Asset | Retained original | Integration |
+## Current route cohesion pass
+
+Eight new source images were made with the built-in ChatGPT image generator.
+Original bytes are retained in assets/source/route. The exact prompts are in
+assets/ROUTE_GENERATION_PROMPTS.md; source and derivative SHA-256, dimensions
+and byte counts are in assets/route_generation_manifest.json.
+
+| Artwork | Retained source | Runtime use |
 | --- | --- | --- |
-| Masked wanderer | assets/source/wanderer.png | 20 independently drawn poses, cropped and aligned into an RGBA atlas |
-| Concrete, soil, roots and props | assets/source/terrain.png | Eight terrain tiles, eight decorative cutouts and a ledge derivative |
-| Continuous ground | assets/source/ground.png | Full-width crop removes visible atlas repetition in the existing room |
-| Distant ruined Earth | assets/backgrounds/skyline.png | Original opaque painted city and atmospheric root background |
-| Near ruins and roots | assets/backgrounds/roots.png | Original transparent painted parallax layer |
-| Foreground | assets/backgrounds/foreground.png | Original transparent painted bracken and roots |
-| Dust, fog and ash | assets/source/effects.png | Cropped and aligned dust frames, fog and particle textures |
-| Selected concept | assets/reference/ash_and_porcelain.png | Original AI concept chosen by the user, retained for art direction |
-| Sound | assets/audio/*.wav | Original deterministic PCM synthesis in tools/build_sound_resources.py; no recordings or AI audio |
-| Existing Roots rooms, NPC and entrances | world/roots/art/* | Preserved from main; prior provenance in docs/art-direction.md and docs/phase-3-report.md |
-| HUD | ui/depth_hud.tscn | Native Godot controls and bundled fallback font |
-| Engine and bundled components | Godot 4.6.3 | Retain applicable upstream notices when distributing |
+| Stable traveler parts | hero_parts.png | Nine painted cutouts; one immutable mask/torso; articulated gait |
+| Watcher, shaft, passages, platform, keepsake and plants | route_props.png | Inspected cutouts with matching ground baselines |
+| Roots soil | roots_soil.png | One continuous full-width terrain crop |
+| Near root overlay | roots_near.png | Separate transparent parallax layer |
+| Landing | landing_depth.png | Original distant mine/root chamber |
+| Junction | junction_depth.png | Original branching root vault |
+| Hollow | hollow_depth.png | Original secret hollow background |
+| Seal | seal_depth.png | Original deep root chamber background |
 
-The exact image prompts are retained in assets/GENERATION_PROMPTS.md. Input
-and derivative checksums are in assets/generation_manifest.json. Mechanical
-cropping, resizing, foot alignment and atlas packing use ImageMagick through
-tools/build_art_resources.py; they do not generate replacement artwork.
-Image generation itself is stochastic; retained inputs make extraction repeatable.
+The foreground reuses the earlier original painted surface foreground; its
+source digest and the selected concept digest are included in the new manifest.
+Preparation uses ImageMagick through tools/build_route_art.py: mechanical
+cropping, resizing, alpha-aware placement and metadata stripping on derivatives.
+No character, terrain or scenery is replaced with programmatically drawn art.
+The original source images and their generation metadata remain intact.
 
-Legacy SVG assets and the former panorama remain as historical source files,
-but are no longer referenced by the player or the surface terrain/backdrops.
-The existing Roots rooms, NPC and entrance assets from main retain their
-phase-three graphics; this revision preserves that route without adding gameplay.
-Their previous
-provenance is recorded in docs/phase-2-report.md and Git history.
+The articulated animation transforms these raster paintings in Godot. Mask and
+torso never switch images or scale. Inverse kinematics solves the drawn legs;
+there are no geometric placeholder limbs or generated intermediate drawings.
+
+## Retained first surface pass
+
+Original panorama, near roots, props, continuous surface ground, dust, mist and
+ash remain from the first AI pass. Sources and exact prompts are retained in
+assets/source, assets/backgrounds, assets/GENERATION_PROMPTS.md and
+assets/generation_manifest.json. The old independently generated character
+atlas remains historical and is not referenced by the active player scene.
+The selected original concept is assets/reference/ash_and_porcelain.png.
+
+Legacy SVG assets remain historical source files. Active room/player scenes do
+not reference them, and the release inspector rejects any SVG resource in PCK.
+Historical generators are guarded against restoring the former SVG pass.
+
+## Audio and bundled components
+
+Sound files in assets/audio are original deterministic PCM synthesis recipes
+from tools/build_sound_resources.py, not recordings or AI music. HUD uses native
+Godot controls and its bundled fallback font. Godot 4.6.3 and bundled components
+retain their upstream notices. No runtime dependencies have been added or updated.
 
 This inventory does not assign a new repository license or assert exclusive
-rights in generated imagery. Existing repository and engine notices remain
-applicable. No music or commercial audio pack is included.
+rights in generated imagery. Retained source images make extraction repeatable;
+image generation itself is stochastic and is not claimed reproducible.

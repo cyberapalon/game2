@@ -121,12 +121,15 @@ func test_input_map_has_physical_keyboard_bindings() -> void:
 
 
 func test_visual_keeps_facing_when_stopped_and_animates_in_place() -> void:
-	var visual: AnimatedSprite2D = _player.get_node("Visual")
+	var visual: WandererVisual = _player.get_node("Visual")
 	var initial_position: Vector2 = _player.position
 	assert_str(visual.animation).is_equal("idle")
-	var initial_frame: int = visual.frame
+	var torso: Sprite2D = visual.get_node("Mirror/Body/Paint")
+	var initial_texture: Texture2D = torso.texture
+	var feet: Vector2 = visual.front_sole_world()
 	await _frames(15)
-	assert_int(visual.frame).is_not_equal(initial_frame)
+	assert_object(torso.texture).is_same(initial_texture)
+	assert_vector(visual.front_sole_world()).is_equal(feet)
 	assert_vector(_player.position).is_equal(initial_position)
 	Input.action_press("move_left")
 	await _frames(4)
@@ -142,7 +145,7 @@ func test_visual_keeps_facing_when_stopped_and_animates_in_place() -> void:
 
 
 func test_visual_follows_ascent_fall_and_landing() -> void:
-	var visual: AnimatedSprite2D = _player.get_node("Visual")
+	var visual: WandererVisual = _player.get_node("Visual")
 	Input.action_press("jump")
 	await _frames(6)
 	Input.action_release("jump")
@@ -170,14 +173,13 @@ func test_jump_from_ground_reaches_existing_rubble() -> void:
 	assert_float(_player.position.y).is_equal_approx(320.0, 0.2)
 
 
-func test_art_frames_import_with_consistent_canvas_and_collision() -> void:
-	var visual: AnimatedSprite2D = _player.get_node("Visual")
-	var expected: Dictionary[StringName, int] = {&"idle": 4, &"run": 8, &"jump": 4, &"fall": 4}
-	for clip: StringName in expected:
-		assert_int(visual.sprite_frames.get_frame_count(clip)).is_equal(expected[clip])
-		for frame: int in expected[clip]:
-			var texture: Texture2D = visual.sprite_frames.get_frame_texture(clip, frame)
-			assert_vector(texture.get_size()).is_equal(Vector2(128, 128))
+func test_art_parts_import_without_changing_collision() -> void:
+	var visual: WandererVisual = _player.get_node("Visual")
+	var parts: Array[Node] = visual.find_children("Paint", "Sprite2D", true, false)
+	assert_int(parts.size()).is_equal(9)
+	for part: Sprite2D in parts:
+		assert_object(part.texture).is_not_null()
+		assert_bool(part.texture.resource_path.ends_with(".png")).is_true()
 	var collider: CollisionShape2D = _player.get_node("CollisionShape2D")
 	assert_vector(collider.shape.size).is_equal(Vector2(24, 44))
 

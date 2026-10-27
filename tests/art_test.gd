@@ -1,28 +1,70 @@
 extends GdUnitTestSuite
 
-const PLAYER_FRAMES: SpriteFrames = preload("res://game/player/player_frames.tres")
 const SurfaceScene: PackedScene = preload("res://world/surface/surface.tscn")
 
 
-func test_painted_frames_have_transparent_padding_and_stable_feet() -> void:
-	for clip: StringName in PLAYER_FRAMES.get_animation_names():
-		for frame: int in PLAYER_FRAMES.get_frame_count(clip):
-			var texture: AtlasTexture = PLAYER_FRAMES.get_frame_texture(clip, frame) as AtlasTexture
-			assert_object(texture).is_not_null()
-			assert_str(texture.atlas.resource_path).contains("wanderer_atlas.png")
-			var image: Image = texture.get_image()
-			var top: int = 128
-			var bottom: int = -1
-			for y: int in image.get_height():
-				for x: int in image.get_width():
-					if image.get_pixel(x, y).a > 0.15:
-						top = mini(top, y)
-						bottom = maxi(bottom, y)
-			assert_int(top).is_greater_equal(4)
-			assert_int(bottom).is_between(106, 110)
-			assert_float(image.get_pixel(0, 0).a).is_equal(0.0)
-	assert_bool(PLAYER_FRAMES.get_animation_loop(&"jump")).is_false()
-	assert_bool(PLAYER_FRAMES.get_animation_loop(&"fall")).is_false()
+func test_idle_keeps_one_torso_texture_proportions_and_planted_soles() -> void:
+	var surface: Node2D = auto_free(SurfaceScene.instantiate())
+	get_tree().root.add_child(surface)
+	await get_tree().process_frame
+	for settle: int in 5:
+		await get_tree().physics_frame
+		await get_tree().process_frame
+	var visual: WandererVisual = surface.player.visual
+	var paint: Sprite2D = visual.get_node("Mirror/Body/Paint")
+	var texture: Texture2D = paint.texture
+	var scale_before: Vector2 = paint.scale
+	var front: Vector2 = visual.front_sole_world()
+	var back: Vector2 = visual.back_sole_world()
+	for tick: int in 90:
+		await get_tree().physics_frame
+		await get_tree().process_frame
+		assert_object(paint.texture).is_same(texture)
+		assert_vector(paint.scale).is_equal(scale_before)
+		assert_float(absf(visual.body.position.y + 7.0)).is_less_equal(0.13)
+		assert_vector(visual.front_sole_world()).is_equal(front)
+		assert_vector(visual.back_sole_world()).is_equal(back)
+
+
+func test_stance_foot_stays_in_world_space_at_actual_run_speed() -> void:
+	var surface: Node2D = auto_free(SurfaceScene.instantiate())
+	get_tree().root.add_child(surface)
+	for tick: int in 5:
+		await get_tree().physics_frame
+		await get_tree().process_frame
+	Input.action_press("move_right")
+	var visual: WandererVisual = surface.player.visual
+	var planted_samples: int = 0
+	var previous_front: Vector2 = visual.front_sole_world()
+	var previous_planted: bool = false
+	var previous_phase: float = visual.phase
+	for tick: int in 80:
+		await get_tree().physics_frame
+		await get_tree().process_frame
+		var current: Vector2 = visual.front_sole_world()
+		if tick > 8 and visual.front_planted and previous_planted and visual.phase >= previous_phase:
+			assert_float(absf(current.x - previous_front.x)).is_less(0.2)
+			assert_float(absf(current.y - previous_front.y)).is_less(0.1)
+			planted_samples += 1
+		previous_front = current
+		previous_planted = visual.front_planted
+		previous_phase = visual.phase
+	Input.action_release("move_right")
+	assert_int(planted_samples).is_greater(20)
+
+
+func test_every_room_loads_painted_textures_without_active_svg() -> void:
+	var surface: Node2D = auto_free(SurfaceScene.instantiate())
+	get_tree().root.add_child(surface)
+	for key: StringName in surface.ROOMS:
+		var room: Node2D = auto_free(surface.ROOMS[key].instantiate())
+		get_tree().root.add_child(room)
+		var count: int = 0
+		for sprite: Sprite2D in room.find_children("*", "Sprite2D", true, false):
+			assert_object(sprite.texture).is_not_null()
+			assert_bool(sprite.texture.resource_path.ends_with(".png")).is_true()
+			count += 1
+		assert_int(count).is_greater(5)
 
 
 func test_painted_ground_fits_collision_and_audio_waits_for_gesture() -> void:

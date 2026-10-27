@@ -1,0 +1,130 @@
+{
+  "body": {
+    "source_box": [
+      30,
+      8,
+      370,
+      440
+    ],
+    "pivot": [
+      210,
+      390
+    ],
+    "scale": 0.094,
+    "axis_correction_radians": 0.0
+  },
+  "cloak": {
+    "source_box": [
+      430,
+      150,
+      405,
+      275
+    ],
+    "pivot": [
+      359,
+      44
+    ],
+    "scale": 0.044,
+    "axis_correction_radians": 0.0
+  },
+  "scarf": {
+    "source_box": [
+      835,
+      150,
+      400,
+      270
+    ],
+    "pivot": [
+      355,
+      44
+    ],
+    "scale": 0.04,
+    "axis_correction_radians": 0.0
+  },
+  "front_thigh": {
+    "source_box": [
+      130,
+      445,
+      170,
+      360
+    ],
+    "pivot": [
+      80,
+      48
+    ],
+    "scale": 0.06103375929811177,
+    "axis_correction_radians": -0.0343
+  },
+  "front_shin": {
+    "source_box": [
+      545,
+      445,
+      150,
+      360
+    ],
+    "pivot": [
+      79,
+      52
+    ],
+    "scale": 0.06176413819725921,
+    "axis_correction_radians": 0.0193
+  },
+  "front_boot": {
+    "source_box": [
+      875,
+      565,
+      340,
+      240
+    ],
+    "pivot": [
+      85,
+      45
+    ],
+    "scale": 0.04,
+    "axis_correction_radians": 0.0,
+    "sole_offset": 7.24
+  },
+  "back_thigh": {
+    "source_box": [
+      130,
+      830,
+      175,
+      375
+    ],
+    "pivot": [
+      84,
+      50
+    ],
+    "scale": 0.057130614868242516,
+    "axis_correction_radians": -0.0214
+  },
+  "back_shin": {
+    "source_box": [
+      545,
+      830,
+      150,
+      375
+    ],
+    "pivot": [
+      75,
+      51
+    ],
+    "scale": 0.05693747553467848,
+    "axis_correction_radians": -0.0071
+  },
+  "back_boot": {
+    "source_box": [
+      875,
+      955,
+      340,
+      250
+    ],
+    "pivot": [
+      85,
+      43
+    ],
+    "scale": 0.04,
+    "axis_correction_radians": 0.0,
+    "sole_offset": 7.88
+  }
+}

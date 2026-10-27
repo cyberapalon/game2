@@ -1,0 +1,115 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://game/player/wanderer_visual.gd" id="script"]
+
+[ext_resource type="Texture2D" path="res://assets/route/hero/body.png" id="body"]
+
+[ext_resource type="Texture2D" path="res://assets/route/hero/cloak.png" id="cloak"]
+
+[ext_resource type="Texture2D" path="res://assets/route/hero/scarf.png" id="scarf"]
+
+[ext_resource type="Texture2D" path="res://assets/route/hero/front_thigh.png" id="front_thigh"]
+
+[ext_resource type="Texture2D" path="res://assets/route/hero/front_shin.png" id="front_shin"]
+
+[ext_resource type="Texture2D" path="res://assets/route/hero/front_boot.png" id="front_boot"]
+
+[ext_resource type="Texture2D" path="res://assets/route/hero/back_thigh.png" id="back_thigh"]
+
+[ext_resource type="Texture2D" path="res://assets/route/hero/back_shin.png" id="back_shin"]
+
+[ext_resource type="Texture2D" path="res://assets/route/hero/back_boot.png" id="back_boot"]
+
+[node name="Visual" type="Node2D"]
+script = ExtResource("script")
+front_sole_offset = 7.24
+back_sole_offset = 7.88
+
+[node name="Mirror" type="Node2D" parent="."]
+
+[node name="BackThigh" type="Node2D" parent="Mirror"]
+
+[node name="Paint" type="Sprite2D" parent="Mirror/BackThigh"]
+texture = ExtResource("back_thigh")
+centered = false
+texture_filter = 2
+position = Vector2(-4.858997914525245, -2.753186525093174)
+rotation = -0.0214
+scale = Vector2(0.057130614868242516, 0.057130614868242516)
+
+[node name="BackShin" type="Node2D" parent="Mirror"]
+
+[node name="Paint" type="Sprite2D" parent="Mirror/BackShin"]
+texture = ExtResource("back_shin")
+centered = false
+texture_filter = 2
+position = Vector2(-4.2908199190466, -2.873419111022452)
+rotation = -0.0071
+scale = Vector2(0.05693747553467848, 0.05693747553467848)
+
+[node name="BackBoot" type="Node2D" parent="Mirror"]
+
+[node name="Paint" type="Sprite2D" parent="Mirror/BackBoot"]
+texture = ExtResource("back_boot")
+centered = false
+texture_filter = 2
+position = Vector2(-3.4, -1.72)
+rotation = 0.0
+scale = Vector2(0.04, 0.04)
+
+[node name="FrontThigh" type="Node2D" parent="Mirror"]
+
+[node name="Paint" type="Sprite2D" parent="Mirror/FrontThigh"]
+texture = ExtResource("front_thigh")
+centered = false
+texture_filter = 2
+position = Vector2(-4.98029508014283, -2.76045348233257)
+rotation = -0.0343
+scale = Vector2(0.06103375929811177, 0.06103375929811177)
+
+[node name="FrontShin" type="Node2D" parent="Mirror"]
+
+[node name="Paint" type="Sprite2D" parent="Mirror/FrontShin"]
+texture = ExtResource("front_shin")
+centered = false
+texture_filter = 2
+position = Vector2(-4.816475547158272, -3.3053029704822636)
+rotation = 0.0193
+scale = Vector2(0.06176413819725921, 0.06176413819725921)
+
+[node name="FrontBoot" type="Node2D" parent="Mirror"]
+
+[node name="Paint" type="Sprite2D" parent="Mirror/FrontBoot"]
+texture = ExtResource("front_boot")
+centered = false
+texture_filter = 2
+position = Vector2(-3.4, -1.8)
+rotation = 0.0
+scale = Vector2(0.04, 0.04)
+
+[node name="Cloak" type="Node2D" parent="Mirror"]
+
+[node name="Paint" type="Sprite2D" parent="Mirror/Cloak"]
+texture = ExtResource("cloak")
+centered = false
+texture_filter = 2
+position = Vector2(-15.796, -1.936)
+scale = Vector2(0.044, 0.044)
+
+[node name="Body" type="Node2D" parent="Mirror"]
+
+[node name="Paint" type="Sprite2D" parent="Mirror/Body"]
+texture = ExtResource("body")
+centered = false
+texture_filter = 2
+position = Vector2(-19.74, -36.66)
+scale = Vector2(0.094, 0.094)
+
+[node name="Scarf" type="Node2D" parent="Mirror"]
+
+[node name="Paint" type="Sprite2D" parent="Mirror/Scarf"]
+texture = ExtResource("scarf")
+centered = false
+texture_filter = 2
+position = Vector2(-14.200000000000001, -1.76)
+scale = Vector2(0.04, 0.04)

@@ -16,7 +16,6 @@ var started: bool = false
 var muted: bool = false
 var step_count: int = 0
 var land_count: int = 0
-var _step_time: float = 0.0
 var _was_grounded: bool = false
 var _previous_velocity_y: float = 0.0
 var _observed_floor: bool = false
@@ -24,6 +23,7 @@ var _observed_floor: bool = false
 
 func _ready() -> void:
 	sound_toggle.toggled.connect(set_muted)
+	player.visual.foot_contact.connect(_on_foot_contact)
 	set_muted(sound_toggle.button_pressed)
 
 
@@ -51,7 +51,7 @@ func _start_audio() -> void:
 		ambience.play()
 
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	var grounded: bool = player.is_on_floor()
 	if grounded:
 		if _observed_floor and not _was_grounded and _previous_velocity_y > 40.0:
@@ -61,18 +61,6 @@ func _physics_process(delta: float) -> void:
 				impacts.stream = land_sound
 				impacts.play()
 		_observed_floor = true
-		if absf(player.velocity.x) > 1.0:
-			_step_time += delta
-			if _step_time >= 0.25:
-				_step_time = 0.0
-				_dust(&"step", 0.40)
-				if started and not muted:
-					footsteps.stream = step_sounds[step_count % step_sounds.size()]
-					footsteps.pitch_scale = 0.96 + float(step_count % 3) * 0.04
-					footsteps.play()
-				step_count += 1
-		else:
-			_step_time = 0.0
 	elif _was_grounded and player.velocity.y < -100.0:
 		if started and not muted:
 			impacts.stream = jump_sound
@@ -81,7 +69,18 @@ func _physics_process(delta: float) -> void:
 	_previous_velocity_y = player.velocity.y
 
 
-func _dust(clip: StringName, effect_scale: float) -> void:
+func _on_foot_contact(sole: Vector2) -> void:
+	if not player.is_on_floor():
+		return
+	_dust(&"step", 0.32, sole.x)
+	if started and not muted:
+		footsteps.stream = step_sounds[step_count % step_sounds.size()]
+		footsteps.pitch_scale = 0.96 + float(step_count % 3) * 0.04
+		footsteps.play()
+	step_count += 1
+
+
+func _dust(clip: StringName, effect_scale: float, sole_x: float = NAN) -> void:
 	var effect: AnimatedSprite2D = AnimatedSprite2D.new()
 	effect.sprite_frames = dust_frames
 	effect.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
@@ -91,6 +90,8 @@ func _dust(clip: StringName, effect_scale: float) -> void:
 	add_child(effect)
 	# The source dust baseline is y=105 in a 128px frame, centered at y=64.
 	effect.global_position = player.global_position + Vector2(0.0, 22.0 - 41.0 * effect_scale)
+	if not is_nan(sole_x):
+		effect.global_position.x = sole_x
 	effect.flip_h = player.velocity.x < 0.0
 	effect.animation_finished.connect(effect.queue_free)
 	effect.play(clip)
