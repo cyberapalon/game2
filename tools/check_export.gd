@@ -24,6 +24,8 @@ func _initialize() -> void:
 		"res://world/roots/landing.tscn", "res://world/roots/junction.tscn",
 		"res://world/roots/hollow.tscn", "res://world/roots/seal.tscn",
 		"res://world/interactions/dialogue.gd",
+		"res://game/enemies/spore.tscn", "res://world/roots/afterheart.tscn",
+		"res://game/boss/heart.tscn", "res://assets/audio/roots_theme.wav", "res://assets/audio/heart_theme.wav",
 	]:
 		if not ResourceLoader.exists(required):
 			push_error("Route resource missing from release: " + required)

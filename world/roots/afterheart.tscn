@@ -1,0 +1,110 @@
+[gd_scene format=3]
+[ext_resource type="Script" path="res://world/rooms/room.gd" id="room"]
+[ext_resource type="Script" path="res://world/interactions/interaction.gd" id="interaction"]
+[ext_resource type="Texture2D" path="res://assets/route/seal_depth.png" id="bg"]
+[ext_resource type="Texture2D" path="res://assets/route/ground.png" id="ground"]
+[ext_resource type="Texture2D" path="res://assets/route/portal.png" id="portal"]
+[ext_resource type="Texture2D" path="res://assets/route/shaft.png" id="shaft"]
+[ext_resource type="Texture2D" path="res://assets/route/foreground.png" id="front"]
+[sub_resource type="RectangleShape2D" id="left"]
+size = Vector2(360, 100)
+[sub_resource type="RectangleShape2D" id="right"]
+size = Vector2(630, 100)
+[sub_resource type="RectangleShape2D" id="wall"]
+size = Vector2(40, 1200)
+[sub_resource type="RectangleShape2D" id="trigger"]
+size = Vector2(100, 80)
+[node name="Afterheart" type="Node2D"]
+script = ExtResource("room")
+room_id = &"afterheart"
+title = "КОРНИ / РАЗОРВАННЫЙ СВОД"
+depth_km = 0.56
+[node name="Background" type="Parallax2D" parent="."]
+z_index = -30
+scroll_scale = Vector2(0.45, 1)
+[node name="Painting" type="Sprite2D" parent="Background"]
+position = Vector2(-80, -60)
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("bg")
+centered = false
+modulate = Color(0.65, 0.77, 1, 1)
+[node name="LeftFloor" type="StaticBody2D" parent="."]
+position = Vector2(180, 510)
+collision_layer = 1
+collision_mask = 2
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftFloor"]
+shape = SubResource("left")
+[node name="Painting" type="Sprite2D" parent="LeftFloor"]
+position = Vector2(-180, -50)
+texture = ExtResource("ground")
+region_enabled = true
+region_rect = Rect2(0, 0, 360, 90)
+centered = false
+[node name="RightFloor" type="StaticBody2D" parent="."]
+position = Vector2(965, 510)
+collision_layer = 1
+collision_mask = 2
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightFloor"]
+shape = SubResource("right")
+[node name="Painting" type="Sprite2D" parent="RightFloor"]
+position = Vector2(-315, -50)
+texture = ExtResource("ground")
+region_enabled = true
+region_rect = Rect2(400, 0, 630, 90)
+centered = false
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(-20, 100)
+collision_layer = 1
+collision_mask = 2
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("wall")
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(1300, 100)
+collision_layer = 1
+collision_mask = 2
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("wall")
+[node name="Spawns" type="Node2D" parent="."]
+[node name="seal" type="Marker2D" parent="Spawns"]
+position = Vector2(180, 438)
+[node name="Back" type="Area2D" parent="."]
+position = Vector2(80, 438)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("interaction")
+kind = "portal"
+prompt = "E — вернуться к Сердцу"
+target_room = &"seal"
+target_entry = &"afterheart"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Back"]
+shape = SubResource("trigger")
+[node name="Painting" type="Sprite2D" parent="Back"]
+position = Vector2(0, -46)
+texture = ExtResource("portal")
+[node name="Descent" type="Area2D" parent="."]
+position = Vector2(1150, 438)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("interaction")
+kind = "finish"
+prompt = "E — спуститься в неизвестность"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Descent"]
+shape = SubResource("trigger")
+[node name="Painting" type="Sprite2D" parent="Descent"]
+position = Vector2(0, -107)
+texture = ExtResource("shaft")
+[node name="Lesson" type="Label" parent="."]
+position = Vector2(195, 288)
+text = "ПО ТУ СТОРОНУ ТИШИНЫ\nПробел — прыгнуть\nShift над пропастью — рывок"
+theme_override_font_sizes/font_size = 17
+theme_override_colors/font_color = Color(0.9, 0.85, 0.65, 1)
+
+[node name="Foreground" type="Parallax2D" parent="."]
+z_index = 3
+scroll_scale = Vector2(1.05, 1)
+[node name="Painting" type="Sprite2D" parent="Foreground"]
+position = Vector2(-30, 140)
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("front")
+centered = false
+texture_filter = 2

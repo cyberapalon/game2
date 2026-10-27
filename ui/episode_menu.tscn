@@ -1,0 +1,63 @@
+[gd_scene format=3]
+[ext_resource type="Script" path="res://ui/episode_menu.gd" id="script"]
+[sub_resource type="StyleBoxFlat" id="panel"]
+bg_color = Color(0.025, 0.05, 0.07, 0.94)
+border_width_top = 1
+border_width_bottom = 1
+border_color = Color(0.62, 0.55, 0.38, 0.8)
+content_margin_left = 32.0
+content_margin_right = 32.0
+content_margin_top = 24.0
+content_margin_bottom = 24.0
+[sub_resource type="StyleBoxFlat" id="button"]
+bg_color = Color(0.16, 0.21, 0.23, 1)
+border_width_left = 2
+border_color = Color(0.8, 0.69, 0.44, 1)
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+[node name="EpisodeMenu" type="CanvasLayer"]
+process_mode = 3
+layer = 30
+script = ExtResource("script")
+[node name="Screen" type="Control" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+[node name="Shade" type="ColorRect" parent="Screen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.015, 0.03, 0.04, 0.66)
+[node name="Panel" type="PanelContainer" parent="Screen"]
+offset_left = 180.0
+offset_right = 780.0
+offset_top = 74.0
+offset_bottom = 460.0
+theme_override_styles/panel = SubResource("panel")
+[node name="Rows" type="VBoxContainer" parent="Screen/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 14
+[node name="Title" type="Label" parent="Screen/Panel/Rows"]
+layout_mode = 2
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 34
+theme_override_colors/font_color = Color(0.92, 0.89, 0.78, 1)
+[node name="Subtitle" type="Label" parent="Screen/Panel/Rows"]
+layout_mode = 2
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.75, 0.65, 0.43, 1)
+[node name="Description" type="Label" parent="Screen/Panel/Rows"]
+layout_mode = 2
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.68, 0.75, 0.77, 1)
+[node name="Primary" type="Button" parent="Screen/Panel/Rows"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("button")
+theme_override_font_sizes/font_size = 20
+[node name="Restart" type="Button" parent="Screen/Panel/Rows"]
+layout_mode = 2
+text = "Начать заново"
+theme_override_font_sizes/font_size = 16

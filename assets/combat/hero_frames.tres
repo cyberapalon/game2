@@ -1,0 +1,19 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/combat/hero_attack_0.png" id="f0_0"]
+[ext_resource type="Texture2D" path="res://assets/combat/hero_attack_1.png" id="f0_1"]
+[ext_resource type="Texture2D" path="res://assets/combat/hero_attack_2.png" id="f0_2"]
+[ext_resource type="Texture2D" path="res://assets/combat/hero_attack_3.png" id="f0_3"]
+[ext_resource type="Texture2D" path="res://assets/combat/hero_hurt_0.png" id="f1_0"]
+[ext_resource type="Texture2D" path="res://assets/combat/hero_hurt_1.png" id="f1_1"]
+[ext_resource type="Texture2D" path="res://assets/combat/hero_hurt_2.png" id="f1_2"]
+[ext_resource type="Texture2D" path="res://assets/combat/hero_hurt_3.png" id="f1_3"]
+[ext_resource type="Texture2D" path="res://assets/combat/hero_death_0.png" id="f2_0"]
+[ext_resource type="Texture2D" path="res://assets/combat/hero_death_1.png" id="f2_1"]
+[ext_resource type="Texture2D" path="res://assets/combat/hero_death_2.png" id="f2_2"]
+[ext_resource type="Texture2D" path="res://assets/combat/hero_death_3.png" id="f2_3"]
+
+[resource]
+animations = [{"frames": [{"duration": 1.0, "texture": ExtResource("f0_0")}, {"duration": 1.0, "texture": ExtResource("f0_1")}, {"duration": 1.0, "texture": ExtResource("f0_2")}, {"duration": 1.0, "texture": ExtResource("f0_3")}], "loop": false, "name": &"attack", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": ExtResource("f1_0")}, {"duration": 1.0, "texture": ExtResource("f1_1")}, {"duration": 1.0, "texture": ExtResource("f1_2")}, {"duration": 1.0, "texture": ExtResource("f1_3")}], "loop": false, "name": &"hurt", "speed": 5.0},
+{"frames": [{"duration": 1.0, "texture": ExtResource("f2_0")}, {"duration": 1.0, "texture": ExtResource("f2_1")}, {"duration": 1.0, "texture": ExtResource("f2_2")}, {"duration": 1.0, "texture": ExtResource("f2_3")}], "loop": false, "name": &"death", "speed": 5.0}]

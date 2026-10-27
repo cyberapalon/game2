@@ -51,6 +51,9 @@ test('visual review: stable five second idle, both run directions, short and ful
     if (message.type() === 'error' || /SCRIPT ERROR:|Parse Error:|^ERROR:/.test(message.text())) errors.push(message.text());
   });
   await page.goto('/index.html?e2e=1');
+  await page.waitForFunction(() => window.__depthE2E?.mode === 'title', null, {timeout: 45000});
+  await page.locator('#canvas').click({position: {x: 12, y: 12}});
+  await page.keyboard.press('Enter');
   await expect.poll(async () => (await state(page))?.grounded, { timeout: 45000 }).toBe(true);
   await page.locator('#canvas').click();
   await page.waitForTimeout(250);

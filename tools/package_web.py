@@ -46,27 +46,28 @@ def main():
     play = DEST / 'play.py'
     shutil.copyfile(ROOT / 'tools/play_web.py', play)
     readme = DEST / 'START-HERE.txt'
-    readme.write_text('''ГЛУБИНА — фаза 3, Поверхность → Корни
+    readme.write_text('''ГЛУБИНА — Первый эпизод, Память почвы
 
 1. Полностью распакуйте архив в обычную папку на своём компьютере.
-2. Нужен Python 3. На Windows запустите START-WINDOWS.cmd двойным щелчком.
-   На macOS/Linux откройте терминал в папке depth-web и выполните:
-       python3 play.py
-   На Windows из терминала можно выполнить: py -3 play.py
-3. Браузер откроется автоматически. Если этого не произошло, откройте
-   адрес, напечатанный в терминале (обычно http://127.0.0.1:8765/index.html).
-4. Щёлкните по игре. A/D или стрелки — движение, Пробел — прыжок,
-   E — поговорить, продолжить диалог, осмотреть предмет или пройти через вход.
-5. Для остановки сервера нажмите Ctrl+C в его терминале.
+2. Нужен Python 3. На Windows запустите START-WINDOWS.cmd.
+   На macOS/Linux в папке depth-web выполните: python3 play.py
+   На Windows из терминала: py -3 play.py
+3. Браузер откроется автоматически. При необходимости откройте адрес,
+   напечатанный сервером, обычно http://127.0.0.1:8765/index.html.
+4. Нажмите «Играть» или Enter. A/D или стрелки — идти, Пробел — прыгать,
+   J/X — удар, E — действие, Esc — пауза, M — звук. Shift — рывок
+   после победы над Сердцем. Удерживайте Пробел для высокого прыжка.
+5. Для остановки сервера нажмите Ctrl+C в терминале.
 
-Маршрут: пройдите вправо, поговорите со смотрителем, перепрыгните обломок
-и найдите старую шахту. Под землёй ищите явные норы и подсказки E.
-На развилке есть верхняя необязательная нора с находкой. Основной путь
-ведёт вправо к закрытому сплетению корней. Можно вернуться на поверхность.
-Секрет запоминается в текущей игровой сессии; после перезагрузки игра начинается заново.
+Идите вправо, поговорите со смотрителем и найдите шахту. Очаги памяти
+восстановят здоровье и сохранят место возрождения. В развилке есть верхняя
+нора с находкой. Основной путь ведёт к Сердцу Корней. Пробудите его по E,
+перепрыгивайте волну и атакуйте открытое сердце. После победы прыгните
+над разломом и нажмите Shift в воздухе. Следующий спуск завершает эпизод.
 
-Игра работает в браузере с WebGL2. Открытие index.html через file:// не подходит.
-Python обслуживает только локальные файлы; устанавливать Godot для игры не нужно.
+Сохранения действуют только в текущей сессии. Игра требует WebGL2 и
+HTTP-сервера; открытие index.html через file:// не подходит. Godot для
+запуска не нужен. Музыка оригинальная, программно синтезированная.
 ''')
     windows = DEST / 'START-WINDOWS.cmd'
     windows.write_bytes(b'@echo off\r\ncd /d "%~dp0"\r\nwhere py >nul 2>nul\r\nif errorlevel 1 (python play.py) else (py -3 play.py)\r\npause\r\n')
@@ -74,11 +75,11 @@ Python обслуживает только локальные файлы; уст
     files += [(play, 'depth-web/play.py'), (readme, 'depth-web/START-HERE.txt'),
               (windows, 'depth-web/START-WINDOWS.cmd'), (manifest, 'depth-web/manifest.json'),
               (DEST / 'verification.json', 'depth-web/verification.json')]
-    web = archive('depth-phase-3-web.zip', files)
+    web = archive('depth-episode-one-web.zip', files)
     artifacts = ROOT / 'reports/web/artifacts'
     evidence = [(p, 'screenshots/' + str(p.relative_to(artifacts)))
                 for p in artifacts.rglob('*.png') if p.name != 'test-failed-1.png']
-    evidence += [(p, p.name) for p in (ROOT / 'reports/web/artifacts').rglob('route-evidence.json')]
+    evidence += [(p, p.name) for p in (ROOT / 'reports/web/artifacts').rglob('episode-evidence.json')]
     evidence += [(ROOT / 'reports/web/results.json', 'playwright-results.json'), (DEST / 'verification.json', 'verification.json')]
     for report_key in ('native_validation_run', 'web_validation_run'):
         if report_key in verification:
@@ -87,7 +88,7 @@ Python обслуживает только локальные файлы; уст
     for xml in verification.get('gdunit_xml', []):
         path = ROOT / xml
         evidence.append((path, 'validation/' + str(path.relative_to(ROOT / 'reports'))))
-    screenshots = archive('depth-phase-3-screenshots.zip', evidence)
+    screenshots = archive('depth-episode-one-screenshots.zip', evidence)
     (DEST / 'SHA256SUMS.txt').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest() + '  ' + p.name + '\n' for p in [web, screenshots, DEST / 'verification.json']))
     print(json.dumps({'web_bytes': web.stat().st_size, 'screenshots_bytes': screenshots.stat().st_size,
                       'verification': verification, 'output': str(DEST)}, indent=2))

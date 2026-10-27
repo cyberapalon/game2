@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" path="res://assets/route/sealed_gate.png" id="seal"]
 [ext_resource type="Texture2D" path="res://assets/route/ground.png" id="ground"]
 [ext_resource type="Texture2D" path="res://assets/route/fern.png" id="fern"]
+[ext_resource type="PackedScene" path="res://game/boss/heart.tscn" id="heart"]
 [sub_resource type="RectangleShape2D" id="Trigger"]
 size = Vector2(100, 76)
 [sub_resource type="RectangleShape2D" id="Floor"]
@@ -101,32 +102,6 @@ texture_filter = 2
 [node name="junction" type="Marker2D" parent="Spawns"]
 position = Vector2(175, 438)
 
-[node name="Platform0" type="StaticBody2D" parent="."]
-position = Vector2(475.0, 429.0)
-collision_layer = 1
-collision_mask = 2
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform0"]
-shape = SubResource("P0")
-[node name="Art" type="Sprite2D" parent="Platform0"]
-position = Vector2(-55.0, -31.0)
-scale = Vector2(0.6875, 0.62)
-texture = ExtResource("platform")
-centered = false
-texture_filter = 2
-
-[node name="Platform1" type="StaticBody2D" parent="."]
-position = Vector2(760.0, 436.0)
-collision_layer = 1
-collision_mask = 2
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform1"]
-shape = SubResource("P1")
-[node name="Art" type="Sprite2D" parent="Platform1"]
-position = Vector2(-60.0, -24.0)
-scale = Vector2(0.75, 0.48)
-texture = ExtResource("platform")
-centered = false
-texture_filter = 2
-
 [node name="Back" type="Area2D" parent="."]
 position = Vector2(80, 438)
 collision_layer = 0
@@ -153,8 +128,8 @@ collision_mask = 2
 script = ExtResource("interaction")
 kind = "seal"
 prompt = "E — осмотреть сплетение"
-target_room = &""
-target_entry = &""
+target_room = &"afterheart"
+target_entry = &"seal"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Seal"]
 shape = SubResource("Trigger")
@@ -164,3 +139,24 @@ position = Vector2(-120, -378)
 texture = ExtResource("seal")
 centered = false
 texture_filter = 2
+
+[node name="Heart" parent="." instance=ExtResource("heart")]
+position = Vector2(940, 350)
+[node name="Awaken" type="Area2D" parent="."]
+position = Vector2(350, 438)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("interaction")
+kind = "boss"
+prompt = "E — пробудить Сердце Корней"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Awaken"]
+shape = SubResource("Trigger")
+[node name="ArenaWall" type="StaticBody2D" parent="."]
+position = Vector2(210, 170)
+collision_layer = 0
+collision_mask = 2
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ArenaWall"]
+shape = SubResource("Wall")
+
+[node name="afterheart" type="Marker2D" parent="Spawns"]
+position = Vector2(1090, 438)

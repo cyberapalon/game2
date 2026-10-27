@@ -1,0 +1,25 @@
+[gd_scene format=3]
+[ext_resource type="Script" path="res://world/interactions/checkpoint.gd" id="script"]
+[ext_resource type="Texture2D" path="res://assets/route/keepsake.png" id="paint"]
+[sub_resource type="RectangleShape2D" id="trigger"]
+size = Vector2(90, 80)
+[node name="Checkpoint" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("script")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("trigger")
+[node name="Painting" type="Sprite2D" parent="."]
+position = Vector2(0, -18)
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("paint")
+texture_filter = 2
+[node name="Caption" type="Label" parent="."]
+offset_left = -96.0
+offset_right = 96.0
+offset_top = -76.0
+theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.85, 0.78, 0.59, 1)
+horizontal_alignment = 1
+text = "ОЧАГ ПАМЯТИ"
+mouse_filter = 2

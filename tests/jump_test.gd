@@ -10,6 +10,7 @@ func before_test() -> void:
 	_release()
 	_surface = auto_free(SurfaceScene.instantiate())
 	get_tree().root.add_child(_surface)
+	_surface.start_game()
 	_player = _surface.player
 	await _frames(5)
 

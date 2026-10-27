@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EnemySettings" format=3]
+[ext_resource type="Script" path="res://game/enemies/enemy_settings.gd" id="1"]
+[resource]
+script = ExtResource("1")
+species = "sporon"
+max_health = 8
+chase_speed = 48.0
+detection_range = 410.0
+windup = 0.95
+recovery = 1.8

@@ -10,6 +10,52 @@ extends CanvasLayer
 @onready var travel_label: Label = $Fade/Travel
 
 
+func show_health(current: int, maximum: int) -> void:
+	$Health.text = "ЦЕЛОСТНОСТЬ  %d / %d" % [current, maximum]
+	$HealthBar.max_value = maximum
+	$HealthBar.value = current
+
+
+func notify(text: String) -> void:
+	$Notice.text = text
+	$Notice.modulate.a = 1.0
+	if _notice_tween != null:
+		_notice_tween.kill()
+	_notice_tween = create_tween()
+	_notice_tween.tween_interval(4.0)
+	_notice_tween.tween_property($Notice, "modulate:a", 0.0, 1.0)
+
+
+var _notice_tween: Tween
+
+
+func begin_ending() -> void:
+	move_child($Ending, 0)
+	$Ending.show()
+	for item: String in ["Health", "HealthBar", "Controls", "SoundToggle", "Chapter"]:
+		get_node(item).hide()
+	room_label.text = "НЕИЗВЕСТНОСТЬ / КРИСТАЛЬНЫЙ СВЕТ"
+
+
+func end_ending() -> void:
+	$Ending.hide()
+	$Ending.modulate.a = 0.0
+	for item: String in ["Health", "HealthBar", "Controls", "SoundToggle", "Chapter"]:
+		get_node(item).show()
+
+
+func show_boss(current: int, maximum: int, phase: int, warning: String) -> void:
+	$Boss.show()
+	$Boss/Name.text = "СЕРДЦЕ КОРНЕЙ" + (" / ПРОБУЖДЕНИЕ" if phase == 2 else "")
+	$Boss/Bar.max_value = maximum
+	$Boss/Bar.value = current
+	$Boss/Warning.text = warning
+
+
+func hide_boss() -> void:
+	$Boss.hide()
+
+
 func show_depth(depth_km: float) -> void:
 	depth_label.text = "Глубина: %.2f км" % depth_km
 
