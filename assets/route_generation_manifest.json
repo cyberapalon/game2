@@ -1,0 +1,334 @@
+{
+  "generator": "Built-in ChatGPT image generator",
+  "reference": "assets/reference/ash_and_porcelain.png",
+  "preparation": "Inspected source rectangles, ImageMagick crop/resize/translation only",
+  "inputs": [
+    {
+      "path": "assets/source/route/hero_parts.png",
+      "bytes": 1139534,
+      "sha256": "6687a5c39613a132f09cf81f908944c73a7f5ad470f8551ab00ed867c94ec3e1",
+      "dimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "assets/source/route/hollow_depth.png",
+      "bytes": 3537758,
+      "sha256": "d9be6a37233027e52274c036e1f3a120db1920bab8eed99b9d1263e582d9e6fe",
+      "dimensions": [
+        1931,
+        814
+      ]
+    },
+    {
+      "path": "assets/source/route/junction_depth.png",
+      "bytes": 3210913,
+      "sha256": "a5273e586651f79c1a78bcf8480c16d6f341c328b8867ee797895d5bf63700d1",
+      "dimensions": [
+        1983,
+        793
+      ]
+    },
+    {
+      "path": "assets/source/route/landing_depth.png",
+      "bytes": 3217702,
+      "sha256": "21a4738b74a272b289f7f8b85da3eaab3e9dc363fee881aa28bf8e1a473681b7",
+      "dimensions": [
+        1931,
+        814
+      ]
+    },
+    {
+      "path": "assets/source/route/roots_near.png",
+      "bytes": 2048113,
+      "sha256": "3703e2d12b5a0d9066074ebf37e4380645ea40755837222ed58d469fce263c1a",
+      "dimensions": [
+        1983,
+        793
+      ]
+    },
+    {
+      "path": "assets/source/route/roots_soil.png",
+      "bytes": 2602427,
+      "sha256": "e81c0b55799e9446c3902bc46220bed555038e31e62e3448bae0fc2160b1abb2",
+      "dimensions": [
+        2172,
+        724
+      ]
+    },
+    {
+      "path": "assets/source/route/route_props.png",
+      "bytes": 2824537,
+      "sha256": "43ed4100f3b36a750a9c37e19019783e847c99f7e10c9b10ffbf3182713dde6f",
+      "dimensions": [
+        1774,
+        887
+      ]
+    },
+    {
+      "path": "assets/source/route/seal_depth.png",
+      "bytes": 3317885,
+      "sha256": "959c16723ebc8538b461e983bdb5c683fab20da377a406dd8c5d37fe75ed2d79",
+      "dimensions": [
+        1983,
+        793
+      ]
+    },
+    {
+      "path": "assets/reference/ash_and_porcelain.png",
+      "bytes": 2766974,
+      "sha256": "26945248710fd05a2765a258306bd8da2b03ba07d5f6bb52e1ccb7ee0902cea5",
+      "dimensions": [
+        1672,
+        941
+      ]
+    },
+    {
+      "path": "assets/backgrounds/foreground.png",
+      "bytes": 982812,
+      "sha256": "654eb11c79d7da501ffa0af68a2304518f52199fb603692e3c6337e9be704fb8",
+      "dimensions": [
+        2172,
+        724
+      ]
+    }
+  ],
+  "derivatives": [
+    {
+      "path": "assets/route/fern.png",
+      "bytes": 58173,
+      "sha256": "ff99cb07db940ef68ca7588b9a27606507d45ecbae102b2841070963b4b1ddd2",
+      "dimensions": [
+        256,
+        180
+      ]
+    },
+    {
+      "path": "assets/route/foreground.png",
+      "bytes": 422977,
+      "sha256": "6b543782a10899d1a9b58122518f5bfb2bc202abefbafd95b9f29f0dfb49bafc",
+      "dimensions": [
+        1280,
+        540
+      ]
+    },
+    {
+      "path": "assets/route/ground.png",
+      "bytes": 287887,
+      "sha256": "97702981513885ae883b1ce46262681e96fb00be453b276ec3ef0b0957a86238",
+      "dimensions": [
+        1280,
+        90
+      ]
+    },
+    {
+      "path": "assets/route/hanging_roots.png",
+      "bytes": 107447,
+      "sha256": "fd64beb65ecc52a94b801f762fd02e955c4a98470d4fd9a9e5b465ea31bdb8f7",
+      "dimensions": [
+        256,
+        300
+      ]
+    },
+    {
+      "path": "assets/route/hero/back_boot.png",
+      "bytes": 108125,
+      "sha256": "c40e302fae3618b6e8737400e4420c080b2c594bf37c646792b737701a842163",
+      "dimensions": [
+        340,
+        250
+      ]
+    },
+    {
+      "path": "assets/route/hero/back_shin.png",
+      "bytes": 88377,
+      "sha256": "ca51dffe696daa816ee22994e0a30de7d11a26b37ee966e429bfb16601a6739a",
+      "dimensions": [
+        150,
+        375
+      ]
+    },
+    {
+      "path": "assets/route/hero/back_thigh.png",
+      "bytes": 103518,
+      "sha256": "28f2920a56873439515f841704cd009d072434dfbced983cb4c36f41dacbbfdd",
+      "dimensions": [
+        175,
+        375
+      ]
+    },
+    {
+      "path": "assets/route/hero/body.png",
+      "bytes": 213945,
+      "sha256": "888d8d19c3de39b3c75084489e1b39e639af673ae6a6716b97ffcc005b07139d",
+      "dimensions": [
+        370,
+        440
+      ]
+    },
+    {
+      "path": "assets/route/hero/cloak.png",
+      "bytes": 122554,
+      "sha256": "2f46c991c9b291f710ae96caec30aa79f4ea662a6fdd3dab9f3b6f6e2d65dc45",
+      "dimensions": [
+        405,
+        275
+      ]
+    },
+    {
+      "path": "assets/route/hero/front_boot.png",
+      "bytes": 109073,
+      "sha256": "f41ef332b6e437ea7e1f2be51568f7be27914d2c54477225c61ab00805ce5d2b",
+      "dimensions": [
+        340,
+        240
+      ]
+    },
+    {
+      "path": "assets/route/hero/front_shin.png",
+      "bytes": 90798,
+      "sha256": "81371b564384779295c7053eac042d4ea0a8b8931359d7cc23cfe8bc4fd23ab2",
+      "dimensions": [
+        150,
+        360
+      ]
+    },
+    {
+      "path": "assets/route/hero/front_thigh.png",
+      "bytes": 99224,
+      "sha256": "0794e475c4b57a42ca3381b448472d54190e75e48a94fe380195cb2713ab8801",
+      "dimensions": [
+        170,
+        360
+      ]
+    },
+    {
+      "path": "assets/route/hero/parts.json",
+      "bytes": 1807,
+      "sha256": "5060c213931b2d833d20c60587a67895e49f623c58f31a9931d0283dd1f615c5"
+    },
+    {
+      "path": "assets/route/hero/scarf.png",
+      "bytes": 92676,
+      "sha256": "e5fbcce4fa5bb78a5413c748a3017c2bbb37330c07992cebb890c2deb77e8a11",
+      "dimensions": [
+        400,
+        270
+      ]
+    },
+    {
+      "path": "assets/route/hollow_depth.png",
+      "bytes": 1508470,
+      "sha256": "a68881fa61a3a3a0b608ce3d4ba1b3d0740ed66294a6a6d45e5df2c89b3c750b",
+      "dimensions": [
+        1280,
+        540
+      ]
+    },
+    {
+      "path": "assets/route/junction_depth.png",
+      "bytes": 1391168,
+      "sha256": "4dd4cfebf250349305fe7221195636df84d12c804070c0c4d34e86aa2ab3fe71",
+      "dimensions": [
+        1280,
+        540
+      ]
+    },
+    {
+      "path": "assets/route/keepsake.png",
+      "bytes": 4121,
+      "sha256": "fd14f078b28d5beb6820cd585f379f0e43fc944b8daf5c3ce1c07e7b6f31c816",
+      "dimensions": [
+        56,
+        56
+      ]
+    },
+    {
+      "path": "assets/route/landing_depth.png",
+      "bytes": 1399446,
+      "sha256": "634e635b20b7666650636e0512dde5ac2885c23a89963fa71e62232922851a62",
+      "dimensions": [
+        1280,
+        540
+      ]
+    },
+    {
+      "path": "assets/route/platform-crop.png",
+      "bytes": 347146,
+      "sha256": "ece018977d158ab1c55d02bb7c633862b03a3a95ececb71b1a0ea5b95c2840c8",
+      "dimensions": [
+        574,
+        222
+      ]
+    },
+    {
+      "path": "assets/route/platform.png",
+      "bytes": 44568,
+      "sha256": "066d0d0f847ca43d1ef3072ced43e2d53ab21cb9c3efd35bc51fedeeca612517",
+      "dimensions": [
+        160,
+        100
+      ]
+    },
+    {
+      "path": "assets/route/portal.png",
+      "bytes": 26424,
+      "sha256": "4f4fbc8b126e0bf693f8aa8a29fc2009e6e261f0031976c883fff16a6524f7e8",
+      "dimensions": [
+        120,
+        160
+      ]
+    },
+    {
+      "path": "assets/route/roots_near.png",
+      "bytes": 864539,
+      "sha256": "96d9db2dab0b87952010b9b027987497e1a5941976dd17795752fca55ef5c8f8",
+      "dimensions": [
+        1280,
+        540
+      ]
+    },
+    {
+      "path": "assets/route/seal_depth.png",
+      "bytes": 1430717,
+      "sha256": "b1dda223c179bdf030af4371d48a339f4f60e1ef27db0c0a7922fd456ff9d6a9",
+      "dimensions": [
+        1280,
+        540
+      ]
+    },
+    {
+      "path": "assets/route/sealed_gate.png",
+      "bytes": 172480,
+      "sha256": "5e6fbf87c4a7699ecb790d9abf452d4ba01d4a625754171ca241c6378587e41d",
+      "dimensions": [
+        240,
+        400
+      ]
+    },
+    {
+      "path": "assets/route/shaft.png",
+      "bytes": 124748,
+      "sha256": "522347faf674299f487220ffdbf7fcabf964e760bb3faf1581b6bd7c2e5d98fe",
+      "dimensions": [
+        240,
+        280
+      ]
+    },
+    {
+      "path": "assets/route/watcher.png",
+      "bytes": 26272,
+      "sha256": "abdb293682c51b51c488fbc4e0b4225d1ea66c79b62e36daeff4d24a69c7e61b",
+      "dimensions": [
+        160,
+        180
+      ]
+    },
+    {
+      "path": "game/player/wanderer_visual.tscn",
+      "bytes": 3666,
+      "sha256": "542e351be7c3eab79a8a5b0cb81b114d6c644b282a121a799d5912ef279f995f"
+    }
+  ]
+}

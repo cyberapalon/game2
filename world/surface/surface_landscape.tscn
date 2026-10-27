@@ -16,8 +16,8 @@
 [ext_resource type="Texture2D" path="res://assets/environment/sleepers.png" id="17"]
 [ext_resource type="Script" path="res://world/rooms/room.gd" id="room"]
 [ext_resource type="Script" path="res://world/interactions/interaction.gd" id="interaction"]
-[ext_resource type="Texture2D" path="res://world/roots/art/npc.svg" id="npc"]
-[ext_resource type="Texture2D" path="res://world/roots/art/shaft.svg" id="shaft"]
+[ext_resource type="Texture2D" path="res://assets/route/watcher.png" id="npc"]
+[ext_resource type="Texture2D" path="res://assets/route/shaft.png" id="shaft"]
 
 [sub_resource type="RectangleShape2D" id="FloorShape"]
 size = Vector2(1600, 120)

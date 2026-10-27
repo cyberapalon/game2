@@ -121,6 +121,8 @@ test('complete route: NPC, descent, all Roots rooms, secret, seal, and return', 
   expect((await state(page)).prompt).toBe('');
   await pressE(page);
   expect((await state(page)).dialogue_active).toBe(false);
+  await walk(page, 540);
+  await shot('surface-with-npc');
   await walk(page, 650);
   await poll(page, s => s.prompt.includes('заговорить'));
   for (let i = 0; i < 3; i++) {
@@ -160,6 +162,7 @@ test('complete route: NPC, descent, all Roots rooms, secret, seal, and return', 
   await walk(page, 430); await jump(page, 530);
   await walk(page, 740); await jump(page, 820);
   await jump(page, 980);
+  await walk(page, 940);
   await poll(page, s => s.interaction === 'Memory');
   await shot('roots-hollow');
   await pressE(page);

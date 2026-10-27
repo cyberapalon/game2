@@ -7,3 +7,6 @@ script = ExtResource("1")
 move_speed = 240.0
 jump_speed = 500.0
 gravity = 1400.0
+short_jump_height = 50.0
+coyote_seconds = 0.1
+jump_buffer_seconds = 0.1

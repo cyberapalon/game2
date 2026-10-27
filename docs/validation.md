@@ -27,7 +27,7 @@ python3 tools/validate.py all
 `all` выполняет перечисленные ниже проверки игрового проекта: пересоздаёт
 `.godot/`, проверяет реальный skills loader, все собственные `.gd`, main smoke,
 все GdUnit4 suites, три чистых release-экспорта, содержимое Web PCK, Linux smoke
-и все пять Web E2E. `unit`/`build` сначала выполняют импорт; `e2e` использует текущий
+и все шесть Web E2E. `unit`/`build` сначала выполняют импорт; `e2e` использует текущий
 `build/web`. `build` очищает `build/`. Все шаги ограничены timeout, проверяют
 exit code и engine errors. GdUnit XML должен быть свежим и непустым,
 без failures/errors/skipped; Playwright JSON — без unexpected/skipped/flaky.
@@ -204,7 +204,7 @@ Wine, rcedit, подпись и запуск на Windows не входят в �
 GODOT_WEB_DIR="$PWD/build/web" playwright test --config tests/web/playwright.config.cjs route.spec.cjs
 ```
 
-Финальный `all` включает 21 GdUnit4 tests и 5 Web E2E. Все комнаты явно
+Финальный `all` включает 29 GdUnit4 tests и 6 Web E2E. Все комнаты явно
 включены в export presets; проверка PCK требует комнаты и диалог.
 `reports/` и `build/` получают `.gdignore`, чтобы Godot не импортировал
 скриншоты предыдущих прогонов. Сборку после успешного `all` упаковывает
@@ -218,3 +218,24 @@ ZIP скриншотов, verification и SHA-256. Доступ игроку д�
 упаковщик принимает `--verification work/verification.json` с объединёнными
 данными обоих запусков. В отчёте явно указывается первый неуспешный шаг;
 объединённый результат не выдаётся за успешный exit всего `all`.
+
+## Единый маршрут и переменная высота прыжка
+
+Целевые проверки: `python3 tools/validate.py unit --suite res://tests/jump_test.gd`
+и `python3 tools/validate.py unit --suite res://tests/art_test.gd`. Jump suite
+проверяет короткий/полный/средний прыжок, coyote на настоящем краю уступа,
+его истечение, однократный buffer и очистку при потере фокуса. Art suite
+проверяет неизменную текстуру/масштаб корпуса, устойчивые стопы, контакт
+ноги в мировых координатах при реальной скорости и PNG во всех комнатах.
+
+Шестой Web-тест `quality.spec.cjs` записывает idle более пяти секунд, бег
+в обе стороны и короткий/полный прыжки. Наблюдения основаны на реальной
+физике, а ввод идёт через browser keyboard. `recording.cjs` сохраняет
+настоящие кадры и их время; `python3 tools/build_review_media.py` кодирует
+MP4 и делает покадровые листы всех кадров. Никаких искусственных in-betweens.
+Для этого используется существующий системный FFmpeg, без установки новой
+копии Playwright FFmpeg. Ожидание всего Web-набора ограничено 300 s.
+
+При просмотре оцениваются каждый ролик покадрово, пять комнат, смотритель,
+шахта, находка, закрытый проход, читаемость платформ и отсутствие стыков.
+PCK inspector дополнительно запрещает SVG в финальном игровом экспорте.

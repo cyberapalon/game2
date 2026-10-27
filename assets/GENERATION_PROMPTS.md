@@ -1,5 +1,9 @@
 # Ash and Porcelain generation prompts
 
+The current complete route and articulated character use the additional sources
+and exact prompts in [ROUTE_GENERATION_PROMPTS.md](ROUTE_GENERATION_PROMPTS.md).
+The independent character frames below are historical and are no longer rendered.
+
 ## ground
 
 Transparent background: true.

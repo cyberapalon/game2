@@ -11,6 +11,10 @@ func _initialize() -> void:
 	var paths: PackedStringArray = []
 	_collect("res://", paths)
 	for path: String in paths:
+		if path.ends_with(".svg") or path.ends_with(".svg.remap") or path.ends_with(".svg.import"):
+			push_error("Legacy SVG leaked into the playable release: " + path)
+			quit(1)
+			return
 		if path.begins_with("res://addons/") or path.begins_with("res://tests/"):
 			push_error("Development dependency leaked into release: " + path)
 			quit(1)

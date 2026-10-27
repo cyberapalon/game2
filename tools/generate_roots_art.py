@@ -5,6 +5,8 @@ import math
 import random
 
 ROOT = Path(__file__).resolve().parents[1]
+if (ROOT / 'assets/source/route/route_props.png').exists():
+    raise SystemExit('Historical SVG generator is archived. Use tools/build_route_art.py; active rooms must retain PNG artwork.')
 ART = ROOT / 'world/roots/art'
 ART.mkdir(parents=True, exist_ok=True)
 

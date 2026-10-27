@@ -1,13 +1,15 @@
 [gd_scene format=3]
 [ext_resource type="Script" path="res://world/rooms/room.gd" id="room"]
 [ext_resource type="Script" path="res://world/interactions/interaction.gd" id="interaction"]
-[ext_resource type="Texture2D" path="res://world/roots/art/seal.svg" id="architecture"]
-[ext_resource type="Texture2D" path="res://world/roots/art/panorama.png" id="bg"]
-[ext_resource type="Texture2D" path="res://world/roots/art/seal_front.svg" id="front"]
-[ext_resource type="Texture2D" path="res://world/roots/art/platform.svg" id="platform"]
-[ext_resource type="Texture2D" path="res://world/roots/art/portal.svg" id="portal"]
-[ext_resource type="Texture2D" path="res://world/roots/art/keepsake.svg" id="secret"]
-[ext_resource type="Texture2D" path="res://world/roots/art/sealed_gate.svg" id="seal"]
+[ext_resource type="Texture2D" path="res://assets/route/roots_near.png" id="architecture"]
+[ext_resource type="Texture2D" path="res://assets/route/seal_depth.png" id="bg"]
+[ext_resource type="Texture2D" path="res://assets/route/foreground.png" id="front"]
+[ext_resource type="Texture2D" path="res://assets/route/platform.png" id="platform"]
+[ext_resource type="Texture2D" path="res://assets/route/portal.png" id="portal"]
+[ext_resource type="Texture2D" path="res://assets/route/keepsake.png" id="secret"]
+[ext_resource type="Texture2D" path="res://assets/route/sealed_gate.png" id="seal"]
+[ext_resource type="Texture2D" path="res://assets/route/ground.png" id="ground"]
+[ext_resource type="Texture2D" path="res://assets/route/fern.png" id="fern"]
 [sub_resource type="RectangleShape2D" id="Trigger"]
 size = Vector2(100, 76)
 [sub_resource type="RectangleShape2D" id="Floor"]
@@ -29,17 +31,22 @@ script = ExtResource("room")
 room_id = &"seal"
 title = "КОРНИ / ГЛУХОЙ СВОД"
 depth_km = 0.42
-[node name="Background" type="Sprite2D" parent="."]
-z_index = -20
-scale = Vector2(0.6628689798032108, 0.6633906633906634)
-modulate = Color(0.82, 0.9, 0.89, 1)
+[node name="Background" type="Parallax2D" parent="."]
+z_index = -30
+scroll_scale = Vector2(0.45, 1)
+[node name="Painting" type="Sprite2D" parent="Background"]
+position = Vector2(-80, -60)
+scale = Vector2(1.2, 1.2)
 texture = ExtResource("bg")
 centered = false
 texture_filter = 2
-flip_h = true
-[node name="Architecture" type="Sprite2D" parent="."]
-z_index = -10
-modulate = Color(0.55, 0.65, 0.6, 0.18)
+[node name="Architecture" type="Parallax2D" parent="."]
+z_index = -15
+scroll_scale = Vector2(0.82, 1)
+[node name="Painting" type="Sprite2D" parent="Architecture"]
+position = Vector2(-80, -60)
+scale = Vector2(1.2, 1.2)
+modulate = Color(0.82, 0.87, 0.94, 0.85)
 texture = ExtResource("architecture")
 centered = false
 texture_filter = 2
@@ -49,6 +56,11 @@ collision_layer = 1
 collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
 shape = SubResource("Floor")
+[node name="GroundArt" type="Sprite2D" parent="Floor"]
+position = Vector2(-640, -50)
+texture = ExtResource("ground")
+centered = false
+texture_filter = 2
 [node name="LeftWall" type="StaticBody2D" parent="."]
 position = Vector2(-20, 100)
 collision_layer = 1
@@ -69,9 +81,20 @@ collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SealedBarrier"]
 shape = SubResource("SealedBarrier")
-[node name="Foreground" type="Sprite2D" parent="."]
+[node name="Foreground" type="Parallax2D" parent="."]
 z_index = 3
+scroll_scale = Vector2(1.05, 1)
+[node name="Painting" type="Sprite2D" parent="Foreground"]
+position = Vector2(-30, 140)
+scale = Vector2(1.2, 1.2)
 texture = ExtResource("front")
+centered = false
+texture_filter = 2
+[node name="Fern" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(320, 406.6)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("fern")
 centered = false
 texture_filter = 2
 [node name="Spawns" type="Node2D" parent="."]

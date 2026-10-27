@@ -142,7 +142,7 @@ def build():
 def e2e():
     env = dict(os.environ, GODOT_WEB_DIR=str(BUILD / 'web'))
     run('web-e2e', [CLOUD / 'tools/browser/node_modules/.bin/playwright', 'test',
-                    '--config', ROOT / 'tests/web/playwright.config.cjs'], timeout=180, env=env)
+                    '--config', ROOT / 'tests/web/playwright.config.cjs'], timeout=300, env=env)
     result = json.loads((ROOT / 'reports/web/results.json').read_text())
     stats = result['stats']
     if stats['expected'] < 2 or any(stats[k] for k in ('unexpected', 'skipped', 'flaky')):
