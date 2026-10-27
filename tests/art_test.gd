@@ -6,6 +6,7 @@ const SurfaceScene: PackedScene = preload("res://world/surface/surface.tscn")
 func test_idle_keeps_one_torso_texture_proportions_and_planted_soles() -> void:
 	var surface: Node2D = auto_free(SurfaceScene.instantiate())
 	get_tree().root.add_child(surface)
+	surface.start_game()
 	await get_tree().process_frame
 	for settle: int in 5:
 		await get_tree().physics_frame
@@ -29,6 +30,7 @@ func test_idle_keeps_one_torso_texture_proportions_and_planted_soles() -> void:
 func test_stance_foot_stays_in_world_space_at_actual_run_speed() -> void:
 	var surface: Node2D = auto_free(SurfaceScene.instantiate())
 	get_tree().root.add_child(surface)
+	surface.start_game()
 	for tick: int in 5:
 		await get_tree().physics_frame
 		await get_tree().process_frame
@@ -56,6 +58,7 @@ func test_stance_foot_stays_in_world_space_at_actual_run_speed() -> void:
 func test_every_room_loads_painted_textures_without_active_svg() -> void:
 	var surface: Node2D = auto_free(SurfaceScene.instantiate())
 	get_tree().root.add_child(surface)
+	surface.start_game()
 	for key: StringName in surface.ROOMS:
 		var room: Node2D = auto_free(surface.ROOMS[key].instantiate())
 		get_tree().root.add_child(room)
@@ -70,6 +73,7 @@ func test_every_room_loads_painted_textures_without_active_svg() -> void:
 func test_painted_ground_fits_collision_and_audio_waits_for_gesture() -> void:
 	var surface: Node2D = auto_free(SurfaceScene.instantiate())
 	get_tree().root.add_child(surface)
+	surface.start_game()
 	await get_tree().process_frame
 	var ground: Sprite2D = surface.room.get_node("Floor/Earth")
 	var ledge: Sprite2D = surface.room.get_node("RubblePlatform/Rubble")

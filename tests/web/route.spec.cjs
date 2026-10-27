@@ -90,123 +90,193 @@ async function landingBack(page) {
   await walk(page, 100);
 }
 
-test('complete route: NPC, descent, all Roots rooms, secret, seal, and return', async ({ page }, info) => {
-  test.setTimeout(180000);
-  const errors = [];
-  const checkpoints = {};
-  const cancelledPck = [];
-  page.on('pageerror', error => errors.push(error.message));
-  page.on('console', message => {
-    if (message.type() === 'error' || /SCRIPT ERROR:|Parse Error:|^ERROR:/.test(message.text())) { errors.push(message.text()); console.log(message.text()); }
-  });
-  page.on('requestfailed', request => {
-    const failure = `${request.url()}: ${request.failure().errorText}`;
-    if (request.url().endsWith('/index.pck') && request.failure().errorText === 'net::ERR_ABORTED') cancelledPck.push(failure);
-    else errors.push(failure);
-  });
-  const shot = async name => {
-    checkpoints[name] = await state(page);
-    await page.screenshot({ path: info.outputPath(`${name}.png`) });
-  };
-  await page.goto(`${gamePath}/index.html?e2e=1`);
-  if (gamePath) expect(await page.evaluate(() => crossOriginIsolated)).toBe(false);
-  await poll(page, s => s?.grounded, 45000);
-  // Godot may cancel a redundant PCK fetch. Booted physics plus a complete
-  // validated PCK response distinguish that cancellation from a failed load.
-  const pck = await page.request.get(`${gamePath}/index.pck`);
-  expect(pck.ok()).toBe(true);
-  expect((await pck.body()).subarray(0, 4).toString()).toBe('GDPC');
-  await page.locator('#canvas').click();
-  await shot('surface');
-  expect((await state(page)).prompt).toBe('');
-  await pressE(page);
-  expect((await state(page)).dialogue_active).toBe(false);
-  await walk(page, 540);
-  await shot('surface-with-npc');
-  await walk(page, 650);
-  await poll(page, s => s.prompt.includes('заговорить'));
-  for (let i = 0; i < 3; i++) {
-    await pressE(page);
-    await poll(page, s => s.dialogue_active && s.dialogue_index === i);
-    expect((await state(page)).control_locked).toBe(true);
-    if (i === 0) {
-      const x = (await state(page)).x;
-      await page.keyboard.down('KeyD');
-      await page.waitForTimeout(200);
-      await page.keyboard.up('KeyD');
-      expect((await state(page)).x).toBe(x);
-      await shot('npc');
+
+test.use({ video: { mode: 'on', size: { width: 960, height: 540 } } });
+
+async function strike(page, key = 'KeyJ', capture) {
+  const hits = (await state(page)).hits_landed;
+  await page.keyboard.press(key, { delay: 35 });
+  if (capture) {
+    await poll(page, s => s.hits_landed > hits);
+    await capture();
+  }
+  await page.waitForTimeout(360);
+}
+
+async function fight(page, id, capture) {
+  for (let tick = 0; tick < 80; tick++) {
+    const s = await state(page);
+    if (s.dead) throw new Error(`Died fighting ${id}: ${JSON.stringify(s)}`);
+    const foe = s.enemies.find(e => e.id === id && e.health > 0);
+    if (!foe) return;
+    const dx = foe.x - s.x;
+    if (Math.abs(dx) > 47) {
+      const key = dx > 0 ? 'KeyD' : 'KeyA';
+      await page.keyboard.down(key);
+      await page.waitForTimeout(80);
+      await page.keyboard.up(key);
+    } else {
+      const face = dx > 0 ? 'KeyD' : 'KeyA';
+      await page.keyboard.press(face, { delay: 20 });
+      await strike(page, tick % 2 ? 'KeyJ' : 'KeyX', capture);
+      capture = null;
     }
   }
-  await pressE(page);
-  await poll(page, s => !s.dialogue_active && !s.control_locked);
-  await walk(page, 880); await jump(page, 1000);
-  await walk(page, 1450);
-  await poll(page, s => s.interaction === 'Mine');
-  await shot('mine-entrance');
-  // Screenshot the moving shaft while held E tests re-entry protection.
-  await page.keyboard.down('KeyE');
-  await poll(page, s => s.transitioning && s.room === 'landing');
-  await shot('descent');
-  await page.keyboard.up('KeyE');
-  await poll(page, s => !s.transitioning && s.grounded);
-  expect((await state(page)).transition_count).toBe(1);
-  expect((await state(page)).depth_km).toBe(.12);
-  await walk(page, 320); await shot('roots-landing');
-  await landingForward(page);
-  await enter(page, 'Burrow', 'junction', .24, 175, 438);
-  await walk(page, 350); await shot('roots-junction');
-  await walk(page, 430); await jump(page, 530);
-  await walk(page, 550); await jump(page, 685);
-  await enter(page, 'Hidden', 'hollow', .27, 175, 438);
-  await walk(page, 430); await jump(page, 530);
-  await walk(page, 740); await jump(page, 820);
-  await jump(page, 980);
-  await walk(page, 940);
-  await poll(page, s => s.interaction === 'Memory');
-  await shot('roots-hollow');
-  await pressE(page);
-  await poll(page, s => s.secret_found && s.note_active);
-  await shot('secret');
-  await pressE(page);
-  await poll(page, s => !s.note_active && !s.control_locked);
-  await walk(page, 650); // Step down; the return obstacle is low enough from the floor.
-  await walk(page, 640); await jump(page, 540);
-  await walk(page, 80);
-  await enter(page, 'Back', 'junction', .24, 685, 318);
-  expect((await state(page)).secret_found).toBe(true);
+  throw new Error(`Enemy did not die: ${JSON.stringify(await state(page))}`);
+}
+
+test('complete episode by real keyboard: combat, death, checkpoints, boss, dash and ending', async ({ page }, info) => {
+  test.setTimeout(360000);
+  const errors = [], evidence = {};
+  page.on('pageerror', e => errors.push(e.message));
+  page.on('console', m => { if (m.type() === 'error' || /SCRIPT ERROR:|Parse Error:|^ERROR:/.test(m.text())) errors.push(m.text()); });
+  const shot = async name => {
+    evidence[name] = await state(page);
+    fs.writeFileSync(info.outputPath('episode-checkpoints.json'), JSON.stringify(evidence, null, 2));
+    await page.screenshot({path: info.outputPath(name + '.png')});
+    console.log('EPISODE', name, JSON.stringify({room: evidence[name].room, hp: evidence[name].health, boss: evidence[name].boss}));
+  };
+  await page.goto(`${gamePath}/index.html?e2e=1`);
+  await poll(page, s => s?.mode === 'title', 45000);
+  await shot('01-title');
+  await page.locator('#canvas').click({position: {x: 12, y: 12}});
+  await page.keyboard.press('Enter');
+  await poll(page, s => s.mode === 'playing' && s.grounded);
+  await page.keyboard.press('Escape');
+  await poll(page, s => s.mode === 'pause');
+  const pausedX = (await state(page)).x;
+  await page.keyboard.down('KeyD'); await page.waitForTimeout(180); await page.keyboard.up('KeyD');
+  expect((await state(page)).x).toBe(pausedX);
+  await shot('02-pause');
+  await page.keyboard.press('Escape');
+  await poll(page, s => s.mode === 'playing');
+  await walk(page, 650);
+  for (let i = 0; i < 4; i++) await pressE(page);
+  await walk(page, 880); await jump(page, 1000); await walk(page, 1450);
+  await enter(page, 'Mine', 'landing', .12, 180, 438);
+  await walk(page, 285);
+  await poll(page, s => s.checkpoint === 'landing');
+  await shot('03-checkpoint-roots');
+  await walk(page, 440); await jump(page, 530); await walk(page, 650);
+  const hp = (await state(page)).health;
+  await poll(page, s => s.health < hp);
+  expect((await state(page)).invulnerable).toBe(true);
+  const hurtHP = (await state(page)).health;
+  await shot('04-receiving-damage');
+  await page.waitForTimeout(250);
+  expect((await state(page)).health).toBe(hurtHP);
+  // Stay in the hound's range until an actual death; no debug damage API.
+  for (let n = 0; n < 160 && !(await state(page)).dead; n++) {
+    const s = await state(page), foe = s.enemies.find(e => e.id === 'landing_a');
+    if (foe && Math.abs(foe.x - s.x) > 55) {
+      await page.keyboard.press(foe.x > s.x ? 'KeyD' : 'KeyA', {delay: 75});
+    }
+    await page.waitForTimeout(80);
+  }
+  await poll(page, s => s.dead);
+  await shot('05-death');
+  await poll(page, s => !s.dead && s.respawn_count === 1);
+  expect((await state(page)).room).toBe('landing');
+  expect((await state(page)).health).toBe(6);
+  await shot('06-respawn');
+  await walk(page, 440); await jump(page, 530); await walk(page, 640);
+  await fight(page, 'landing_a', () => shot('07-kornevik-combat'));
+  expect((await state(page)).hits_landed).toBeGreaterThanOrEqual(3);
+  await walk(page, 760); await jump(page, 860); await walk(page, 975);
+  await fight(page, 'landing_b');
   await walk(page, 1180);
+  await enter(page, 'Burrow', 'junction', .24, 175, 438);
+  await fight(page, 'junction_a');
+  await walk(page, 430); await jump(page, 530); await walk(page, 550); await jump(page, 685);
+  await enter(page, 'Hidden', 'hollow', .27, 175, 438);
+  await walk(page, 430); await jump(page, 530); await walk(page, 600);
+  await poll(page, s => s.enemies.some(e => e.species === 'sporon' && e.shots > 0), 12000);
+  await shot('08-sporon-combat');
+  await fight(page, 'hollow_a');
+  await walk(page, 740); await jump(page, 820); await jump(page, 980);
+  await fight(page, 'hollow_b');
+  await jump(page, 980);
+  await walk(page, 940); await pressE(page);
+  await poll(page, s => s.secret_found && s.note_active);
+  await shot('09-memory'); await pressE(page);
+  await walk(page, 650); await walk(page, 640); await jump(page, 540); await walk(page, 80);
+  await enter(page, 'Back', 'junction', .24, 685, 318);
+  await walk(page, 960); await fight(page, 'junction_b');
+  await walk(page, 1180);
+  await poll(page, s => s.checkpoint === 'junction');
+  expect((await state(page)).health).toBe(6);
+  await shot('10-checkpoint-heart');
   await enter(page, 'Deep', 'seal', .42, 175, 438);
-  await walk(page, 380); await jump(page, 480);
-  await walk(page, 660); await jump(page, 760);
-  await walk(page, 1080); await shot('roots-seal');
-  await walk(page, 1110); await pressE(page);
-  await poll(page, s => s.note_active);
-  await shot('closed-passage');
-  expect((await state(page)).room).toBe('seal');
-  await pressE(page);
-  await page.keyboard.down('KeyD');
-  try {
-    await page.waitForTimeout(350);
-    expect((await state(page)).x).toBeLessThan(1129);
-    expect((await state(page)).room).toBe('seal');
-  } finally { await page.keyboard.up('KeyD'); }
-  // Full return checks reverse obstacles, every connection and surface depth reset.
-  await walk(page, 860); await jump(page, 760);
-  await walk(page, 570); await jump(page, 480);
-  await walk(page, 80);
-  await enter(page, 'Back', 'junction', .24, 1080, 438);
-  await walk(page, 990); await jump(page, 900);
-  await walk(page, 870); await jump(page, 740);
-  await walk(page, 80);
-  await enter(page, 'Back', 'landing', .12, 1090, 438);
-  await landingBack(page);
-  await enter(page, 'Ladder', 'surface', 0, 1350, 398);
-  await shot('returned-surface');
-  expect((await state(page)).secret_found).toBe(true);
-  expect((await state(page)).transition_count).toBe(8);
-  await walk(page, 1400);
-  expect((await state(page)).vx).toBe(0);
+  await walk(page, 350); await pressE(page);
+  await poll(page, s => s.boss_active);
+  expect((await state(page)).music).toBe('boss');
+  let bossShot = false, phaseShot = false, jumpHeld = false, moving = '';
+  const bossStart = Date.now();
+  while (!(await state(page)).boss_defeated && Date.now() - bossStart < 160000) {
+    const s = await state(page), boss = s.boss;
+    if (s.dead) throw new Error('Boss defeated player: ' + JSON.stringify(s));
+    if (boss.state === 'dead') { await page.waitForTimeout(60); continue; }
+    if (!bossShot && boss.slams > 0 && boss.storms > 0) { await shot('11-boss-fight'); bossShot = true; }
+    if (!phaseShot && boss.phase === 2) { await shot('12-boss-phase-two'); phaseShot = true; }
+    const goal = boss.state === 'windup_storm' ? 660 : 815;
+    const direction = Math.abs(s.x - goal) < 8 ? '' : s.x < goal ? 'KeyD' : 'KeyA';
+    if (direction !== moving) {
+      if (moving) await page.keyboard.up(moving);
+      moving = direction;
+      if (moving) await page.keyboard.down(moving);
+    }
+    if (boss.state === 'windup_slam' && boss.left < .46 && s.grounded && !jumpHeld) {
+      await page.keyboard.down('Space'); jumpHeld = true;
+    }
+    if (jumpHeld && boss.state === 'recover') { await page.keyboard.up('Space'); jumpHeld = false; }
+    if (boss.state === 'recover' && s.x > 790 && s.attack_left <= 0) {
+      if (s.facing_left) await page.keyboard.press('KeyD', {delay: 18});
+      await page.keyboard.press('KeyJ', {delay: 24});
+    }
+    await page.waitForTimeout(35);
+  }
+  if (moving) await page.keyboard.up(moving);
+  if (jumpHeld) await page.keyboard.up('Space');
+  await poll(page, s => s.boss_defeated && s.dash_unlocked && s.note_active);
+  expect((await state(page)).dash_awards).toBe(1);
+  expect(phaseShot && bossShot).toBe(true);
+  await shot('13-dash-reward');
+  await pressE(page); await poll(page, s => !s.note_active);
+  await walk(page, 1110);
+  await enter(page, 'Seal', 'afterheart', .56, 180, 438);
+  await shot('14-open-passage');
+  // A real full jump fails the gap, then the learned air dash succeeds.
+  await walk(page, 320);
+  await page.keyboard.down('KeyD'); await page.keyboard.down('Space');
+  await poll(page, s => s.course_retries > 0);
+  await page.keyboard.up('KeyD'); await page.keyboard.up('Space');
+  await poll(page, s => s.grounded);
+  await walk(page, 320);
+  const retries = (await state(page)).course_retries;
+  await page.keyboard.down('Space'); await page.keyboard.down('KeyD');
+  await poll(page, s => !s.grounded && s.vy > -100 && s.x > 365);
+  await page.keyboard.down('ShiftLeft');
+  await poll(page, s => s.dash_count > 0);
+  await page.keyboard.up('ShiftLeft');
+  await poll(page, s => s.x > 670 && s.grounded);
+  await page.keyboard.up('Space'); await page.keyboard.up('KeyD');
+  expect((await state(page)).course_retries).toBe(retries);
+  expect((await state(page)).dash_awards).toBe(1);
+  await shot('15-dash-gap');
+  await walk(page, 1150); await pressE(page);
+  await poll(page, s => s.episode_complete && s.transitioning);
+  await page.waitForTimeout(1400);
+  await shot('16-final-descent');
+  await poll(page, s => s.mode === 'victory');
+  expect((await state(page)).depth_km).toBe(1.86);
+  expect((await state(page)).depth_text).toBe('Глубина: 1.86 км');
+  await shot('17-episode-complete');
+  await page.keyboard.press('Enter');
+  await poll(page, s => s.mode === 'playing' && s.room === 'surface');
+  const reset = await state(page);
+  expect(reset.dash_unlocked).toBe(false);
+  expect(reset.boss_defeated).toBe(false);
+  expect(reset.enemies_defeated).toBe(0);
   expect(errors).toEqual([]);
-  fs.writeFileSync(info.outputPath('route-evidence.json'), JSON.stringify({ checkpoints, final: await state(page), errors, cancelledPck }, null, 2));
+  fs.writeFileSync(info.outputPath('episode-evidence.json'), JSON.stringify({evidence, reset, errors, boss_seconds: (Date.now() - bossStart)/1000}, null, 2));
 });

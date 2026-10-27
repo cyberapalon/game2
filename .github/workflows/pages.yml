@@ -30,6 +30,7 @@ jobs:
         uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
         with:
           path: ${{ runner.temp }}/depth-pages
+          retention-days: 14
 
   deploy:
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'

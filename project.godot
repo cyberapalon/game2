@@ -32,9 +32,23 @@ interact={
 "events": [Object(InputEventKey,"physical_keycode":69)]
 }
 
+attack={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":74), Object(InputEventKey,"physical_keycode":88)]
+}
+dash={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":4194325)]
+}
+pause={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":4194305)]
+}
+
 [layer_names]
 2d_physics/layer_1="World"
 2d_physics/layer_2="Player"
+2d_physics/layer_3="Enemies"
 
 [physics]
 common/physics_ticks_per_second=60

@@ -12,7 +12,24 @@
 [ext_resource type="AudioStream" path="res://assets/audio/step_3.wav" id="24"]
 [ext_resource type="AudioStream" path="res://assets/audio/land.wav" id="25"]
 [ext_resource type="AudioStream" path="res://assets/audio/jump.wav" id="26"]
+[ext_resource type="PackedScene" path="res://ui/episode_menu.tscn" id="menu"]
 
+[ext_resource type="Script" path="res://world/surface/episode_audio.gd" id="episode_audio"]
+
+[ext_resource type="AudioStream" path="res://assets/audio/ability.wav" id="sound_ability"]
+[ext_resource type="AudioStream" path="res://assets/audio/boss_death.wav" id="sound_boss_death"]
+[ext_resource type="AudioStream" path="res://assets/audio/boss_slam.wav" id="sound_boss_slam"]
+[ext_resource type="AudioStream" path="res://assets/audio/checkpoint.wav" id="sound_checkpoint"]
+[ext_resource type="AudioStream" path="res://assets/audio/dash.wav" id="sound_dash"]
+[ext_resource type="AudioStream" path="res://assets/audio/death.wav" id="sound_death"]
+[ext_resource type="AudioStream" path="res://assets/audio/enemy_death.wav" id="sound_enemy_death"]
+[ext_resource type="AudioStream" path="res://assets/audio/enemy_warning.wav" id="sound_enemy_warning"]
+[ext_resource type="AudioStream" path="res://assets/audio/gate.wav" id="sound_gate"]
+[ext_resource type="AudioStream" path="res://assets/audio/heart_theme.wav" id="sound_heart_theme"]
+[ext_resource type="AudioStream" path="res://assets/audio/hit.wav" id="sound_hit"]
+[ext_resource type="AudioStream" path="res://assets/audio/hurt.wav" id="sound_hurt"]
+[ext_resource type="AudioStream" path="res://assets/audio/roots_theme.wav" id="sound_roots_theme"]
+[ext_resource type="AudioStream" path="res://assets/audio/strike.wav" id="sound_strike"]
 [node name="Surface" type="Node2D"]
 script = ExtResource("1")
 [node name="RoomHost" type="Node2D" parent="."]
@@ -25,6 +42,7 @@ limit_top = 0
 limit_right = 1600
 limit_bottom = 540
 [node name="DepthHud" parent="." instance=ExtResource("3")]
+[node name="EpisodeMenu" parent="." instance=ExtResource("menu")]
 
 [node name="Presentation" type="Node2D" parent="." node_paths=PackedStringArray("player", "sound_toggle")]
 script = ExtResource("18")
@@ -45,3 +63,19 @@ max_polyphony = 2
 
 [node name="Impacts" type="AudioStreamPlayer" parent="Presentation"]
 volume_db = -10.0
+
+[node name="EpisodeAudio" type="Node" parent="." node_paths=PackedStringArray("presentation", "route")]
+script = ExtResource("episode_audio")
+presentation = NodePath("../Presentation")
+route = NodePath("..")
+roots_music = ExtResource("sound_roots_theme")
+heart_music = ExtResource("sound_heart_theme")
+sounds = Dictionary[StringName, AudioStream]({&"attack": ExtResource("sound_strike"), &"hit": ExtResource("sound_hit"), &"hurt": ExtResource("sound_hurt"), &"death": ExtResource("sound_death"), &"enemy_warning": ExtResource("sound_enemy_warning"), &"enemy_attack": ExtResource("sound_strike"), &"enemy_hurt": ExtResource("sound_hit"), &"enemy_death": ExtResource("sound_enemy_death"), &"boss_warning": ExtResource("sound_enemy_warning"), &"boss_slam": ExtResource("sound_boss_slam"), &"boss_storm": ExtResource("sound_enemy_warning"), &"boss_hurt": ExtResource("sound_hit"), &"boss_death": ExtResource("sound_boss_death"), &"ability": ExtResource("sound_ability"), &"gate": ExtResource("sound_gate"), &"checkpoint": ExtResource("sound_checkpoint"), &"dash": ExtResource("sound_dash")})
+[node name="Music" type="AudioStreamPlayer" parent="EpisodeAudio"]
+volume_db = -13.0
+[node name="Cues" type="AudioStreamPlayer" parent="EpisodeAudio"]
+volume_db = -7.0
+max_polyphony = 6
+
+[node name="Resonance" type="AudioStreamPlayer" parent="EpisodeAudio"]
+volume_db = -12.0

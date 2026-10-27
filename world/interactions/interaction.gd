@@ -1,7 +1,7 @@
 extends Area2D
 ## A local interaction trigger; the route owns dialogue and room lifecycle.
 
-@export_enum("portal", "npc", "secret", "seal") var kind: String = "portal"
+@export_enum("portal", "npc", "secret", "seal", "boss", "finish") var kind: String = "portal"
 @export var prompt: String = "E — войти"
 @export var target_room: StringName
 @export var target_entry: StringName

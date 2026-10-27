@@ -1,0 +1,200 @@
+{
+  "origin": "Built-in ChatGPT image generation; original Ash and Porcelain references only",
+  "assets": {
+    "kornevik": {
+      "source_sha256": "cf6dac3e83902ba74265505907d65dcc6747ef1664b84477ad41f5dbb9bcfa6f",
+      "grid": [
+        4,
+        5
+      ],
+      "canvas": [
+        128,
+        128
+      ],
+      "pivot": [
+        64.0,
+        120
+      ],
+      "scale": 0.34,
+      "baselines": [
+        274,
+        535,
+        832,
+        1096,
+        1350
+      ]
+    },
+    "sporon": {
+      "source_sha256": "211c19defa21c828b8a94f80b434ccdb9b7fdc54577ea1dff76cd6741fae9896",
+      "grid": [
+        4,
+        5
+      ],
+      "canvas": [
+        128,
+        128
+      ],
+      "pivot": [
+        64.0,
+        120
+      ],
+      "scale": 0.34,
+      "baselines": [
+        274,
+        550,
+        837,
+        1120,
+        1382
+      ]
+    },
+    "heart": {
+      "source_sha256": "ea6b9880b01769002cfb29ea24157862d34380fc98150e0d233b2dea7894ec35",
+      "grid": [
+        4,
+        5
+      ],
+      "canvas": [
+        400,
+        360
+      ],
+      "pivot": [
+        200.0,
+        352
+      ],
+      "scale": 1.02,
+      "baselines": [
+        284,
+        560,
+        840,
+        1122,
+        1383
+      ]
+    },
+    "hero": {
+      "source_sha256": "2d5971cdf2d9bda7b695bd601b290e2fc87ec18f2e9f3f308d6a28cd54bf6c55",
+      "grid": [
+        4,
+        3
+      ],
+      "canvas": [
+        128,
+        100
+      ],
+      "pivot": [
+        64.0,
+        92
+      ],
+      "scale": 0.2,
+      "baselines": [
+        366,
+        717,
+        1034
+      ]
+    },
+    "hero_attack": {
+      "source_sha256": "50a6b04de864d05dcc371dcccfe3f06c667eafd005d77be2488cac530cbfdc2a",
+      "bounds": [
+        0,
+        543,
+        1153,
+        1734,
+        2172
+      ],
+      "anchors": [
+        282,
+        826,
+        1370,
+        1933
+      ],
+      "scale": 0.125,
+      "baseline": 595,
+      "pivot": [
+        64,
+        92
+      ]
+    },
+    "ending": {
+      "source_sha256": "52575f911667c3bc202741e790dbc5928fabf9daa8b2ba7e1e7d49e4b1ed1d0f",
+      "purpose": "Non-playable final still; hint only, not another biome"
+    }
+  },
+  "derivatives_sha256": {
+    "ending.png": "40f79b7560f8b23a9a18e839ae5972f14d34a1eda6e74d89cc9df23465b2061b",
+    "heart_death_0.png": "a83fd3d5aaf4f23feee5a85ac1c186f83231e226a8268780fdb3540559f4d280",
+    "heart_death_1.png": "cec2a68bc774a582a5ccbab1713bb8affe8da4a30e089074361d14c481baed2a",
+    "heart_death_2.png": "452c9d74f9db6fc143561e3d2d8639567f4a43dc58db08831187d9d1ea0980a0",
+    "heart_death_3.png": "db6ea1b741d86908c60f0f2c2224b729cb51aeaef42ee730ae2c7ff71e7f0117",
+    "heart_frames.tres": "65df869342f1020e1e2e2dba55e58c90aef9a5fd54931421532d8450845dd13f",
+    "heart_hurt_0.png": "639f1108e5c018be05bd4951e080bc933fc7fb3bc9d3a7af5d8a238cdf4f5ed0",
+    "heart_hurt_1.png": "fe1c0efe03c1f667b324361566b5c751b90d88b611100ff0da366837727e5200",
+    "heart_hurt_2.png": "f04a9f12c217f2467cee46d92031e449b2128c9b9390f9170b8826c64b684798",
+    "heart_hurt_3.png": "cb3650f14b9f9ad6acfda6d787555d62f547f64bbe846a4f98ac66d07dfcc036",
+    "heart_idle_0.png": "ab836b0a3791073082cfd137aac737b283e594f7679ab0303772eb51a2d44328",
+    "heart_idle_1.png": "f40f96ac708f61351ee40d70b39e68f9205eee30cabd268001550e61de52b623",
+    "heart_idle_2.png": "d3f111a417c24e05863447ef229f25b56e72cff8e3c90b0d5453274abfde0f5f",
+    "heart_idle_3.png": "25163b88300f083367cc6bbd78a3c55c4206604c18b4d68e64f20073f9a77d68",
+    "heart_slam_0.png": "f854adc4f2c66521359c73c438291fee8783cd1c6585a2e00dcc5ce34d0c44d2",
+    "heart_slam_1.png": "078a4d2de0546b45a0e822f0ebb7dcb0d376e76d13e7626657df3e6bc736aa5e",
+    "heart_slam_2.png": "c979146544b236a73776000897315fdac8e3ed0a363cf1ca4b467bf00464bb43",
+    "heart_slam_3.png": "b032d71ab864a87023203c5b3542b41674549ae62df95c588e83ae3aa6f73e65",
+    "heart_storm_0.png": "6248a29c3df8211faab1e751b57641efc030b3219b89faac9526ebbf0021fdf8",
+    "heart_storm_1.png": "11444cfb068f36c2d9dccb65c8dc16d5ed9435b7708fe5d6adcf1acbd1b50372",
+    "heart_storm_2.png": "d182353f0d8f2e4fddd149d9716fec88a78a11cbbe8d41ba219ed14ed2230f24",
+    "heart_storm_3.png": "3d98ac388483082689ca1fb2fa43435f82e230781308d5024a64fb530fc3a3f9",
+    "hero_attack_0.png": "2c2bea0a69bed3e608130b56e4fccf76d3cda7d09accd151fbfedaf69c72383c",
+    "hero_attack_1.png": "f79dfbe02ecd1d41f84e3668321194ffe100b93ec35ec1b2e7fc971b9fd26356",
+    "hero_attack_2.png": "f06d35e327454e38a9c8ffecf0461e63371c983ca9d542547860520bffa11075",
+    "hero_attack_3.png": "18c8b2390edd0373057f34405b1bbadb6cf6bbc53dfbe9f0141876e5f73baf7e",
+    "hero_death_0.png": "bb1dffd9272d0aed09bfb71ffb68b60ab55c28043a526833d7a272e366850af9",
+    "hero_death_1.png": "7f859b6f7fa0ce76db0c6adb7ada6924ac603d50f88333591f0195bb60c85fa7",
+    "hero_death_2.png": "32e1cbcb62b92a2f93b1a2e2004cc51a770d973fbc40fda4e2575d15ca9ab3ec",
+    "hero_death_3.png": "d5d19172c0b813bbc3529314d0b3350e1b80c65f5482c62fed5214de9c758bbd",
+    "hero_frames.tres": "58a14ea9cdd51dadc0a2a2816fc176bb1eb9c2c8cbcd25d2c1ca1b625a49d498",
+    "hero_hurt_0.png": "9b046ec402ef5a8a9bb6e648bdda6de17de8d18d412cdc58a6420e4c4c0dfa90",
+    "hero_hurt_1.png": "2af03345b808f16844d799e5248190ae6940c3c1d06e37ebc74d169fcc540454",
+    "hero_hurt_2.png": "cf4cb4d720e9d5191984583e87b3fb8ee53a367fdf57cf3a3a3e74e3f4692be0",
+    "hero_hurt_3.png": "9af15addc697fc5b1fa1a884d707b05ed8e7c720c3a715abdaabf885e03ca507",
+    "kornevik_attack_0.png": "e3413fb46489bbc17c4cb68dccef3aaaecbfeb934e353725c25f35189f069595",
+    "kornevik_attack_1.png": "9411e2af6065881f51739872627c6cc5132d29fd45f717fa13a4e63758b15e4d",
+    "kornevik_attack_2.png": "bac920ff968a3af63bf5c877013ce4813cb39847cf3d75b8cec96c19443cbe9a",
+    "kornevik_attack_3.png": "282bafdcb5023786de04e19fafe1932a9cf5a3efe810c96d75f51635d21c45e5",
+    "kornevik_death_0.png": "0b081d537b79b69d602b563626866384b9ce7652be02f3cad61863bedee163ab",
+    "kornevik_death_1.png": "ca4990ac1772752e14392ba79f2f8bf21e607583588c32e5b473d211d4422367",
+    "kornevik_death_2.png": "7dc87c1dce4bdb519fd4f1b0709f342834fbeb960fa892988560c4ecc187b4b4",
+    "kornevik_death_3.png": "8f15d3cf0436ec5d80fa909ca5d80b3515e959cb648cbe318c46edd9be938c35",
+    "kornevik_frames.tres": "c1392e694d7f469c86c75720d521fecd6885a0c7a38ca849dbdbfdf2846ef7a4",
+    "kornevik_hurt_0.png": "170f0feeec950d33a72335e0183933f50af0c086793e0ee9b953d1bb733cd35c",
+    "kornevik_hurt_1.png": "821f288f003eca9ea1ae7e4a30535bc52fb71c7ce9a7a430e3342a95bb785b0d",
+    "kornevik_hurt_2.png": "1c487feb9174758f9a9227809c7db63e9c053ae2e85a5756fb8dc499736ad422",
+    "kornevik_hurt_3.png": "e8883f72c7926d7841712e4467f905a7987d3f97f446a9864722cb42519d199f",
+    "kornevik_idle_0.png": "56e359b6e5cae541a108ca591c988a9644b83defa9271a415cbbcb2b6e83af97",
+    "kornevik_idle_1.png": "974de0d4ff3be8f14ccd6e7ffff90458d5e61ca3fd2000323cca95f0be9d2e37",
+    "kornevik_idle_2.png": "d6cf7529d250e33ff179c50833b7ea57d4c30ff75202863ad9af8ca9ee244f15",
+    "kornevik_idle_3.png": "fe1b76440d95d1ea8f0db542ff52918aa212e8fb5356179a00cfbee8d5410951",
+    "kornevik_move_0.png": "e4de7c5ff94290c493dd62de43eda6ea17bace947c287f9c515e5809d61cbc8b",
+    "kornevik_move_1.png": "fcedec95aed7dbe6c0b1c9fe27dc7f90300a86a5e721116eef4d9ed793aa0a53",
+    "kornevik_move_2.png": "ae3d8a51692faa521646d5df3020e651838185516cdb6be80567ed4e3d874254",
+    "kornevik_move_3.png": "696fb272373e504f257044ecdaef1714316dfbd00b2ac422a15cd475f4a68198",
+    "sporon_attack_0.png": "4c59e95c07ad5d6181bbb51fcc94541ec51af4a42e0335b2be5e0dcf28841f59",
+    "sporon_attack_1.png": "adaebce25a5072cf9424ccb1e556bb750424d60f128aa4d8d7dca236d221e98e",
+    "sporon_attack_2.png": "d09dbf6b45771d99c3ce10a8993a3b23c9d67cf3eb55a30e62023a2d4af61447",
+    "sporon_attack_3.png": "f3975722c7118cf7fabf33304fe8902145462c5f5abb20acdfcfb888641a934d",
+    "sporon_death_0.png": "9c95a62ddf18a9c80ed60400dbbe94dcdaabe0913635d4f2d6d710a44b5decef",
+    "sporon_death_1.png": "ed333278fd334b672afd103d771cb138063c3661be28ff401ecbef6790688aa1",
+    "sporon_death_2.png": "2e4b22552c68a872fc29175b8dc3487eb3595158aac8634e4a49fcf0259055e3",
+    "sporon_death_3.png": "30e2419fe45d72135220064c851e9d99f0820b7a5c12e74a4c28df548134d892",
+    "sporon_frames.tres": "5bf55c5947597c2e43eba3ba8a86d34c0b25071052210eb8b90a75b73835664f",
+    "sporon_hurt_0.png": "63de1f22621d1ccf6b7eaebe37a51a3aa97ced3e610585df65e4162593eebb8f",
+    "sporon_hurt_1.png": "22beb9a9a19cd84d561c0dfe873096c93858c2c238f0e45b1a1ac4872e9f008b",
+    "sporon_hurt_2.png": "df46b0e160a8bab7d31c779e179a999faf16f15822596c99dd913087f734757d",
+    "sporon_hurt_3.png": "d78173a4195cc00bdc00f14bc271542b1b54d7d200af7dddbd09f841b83ede73",
+    "sporon_idle_0.png": "712229ddaa6620e06d99bf70962a02d5efb51768e43ab63e60770a135de89186",
+    "sporon_idle_1.png": "cb6436d85ae84996fa431777d93b3002ee094adc9b14d63843ebcff38f8c1ab6",
+    "sporon_idle_2.png": "3fa85c058c4a956b706d0fcff936a4c834b7ce93d4c1a586b02de91bfaf16a9f",
+    "sporon_idle_3.png": "b0238f1685f3b0f37bdab4f11ebbcdf0ea9c419908a597263415f37d8f76aac7",
+    "sporon_move_0.png": "ec04b56f6d35ed1ba4d3b0016c6920c651fc5ddbc7c8397c71da6e642131204e",
+    "sporon_move_1.png": "095510b021eb6cb5afeaee5075c4f262905aa516b32f8e980555770cb61798f5",
+    "sporon_move_2.png": "02eed8ef2a893e01a4f7f1c4e7d959a7491c2d154a442fce88f587fd06201bd0",
+    "sporon_move_3.png": "67064699a9ab8e0e07895cdd0e417e768d8c3c52e0e25363b6d897fc58fc232e"
+  }
+}

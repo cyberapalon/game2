@@ -239,3 +239,26 @@ MP4 и делает покадровые листы всех кадров. Ни�
 При просмотре оцениваются каждый ролик покадрово, пять комнат, смотритель,
 шахта, находка, закрытый проход, читаемость платформ и отсутствие стыков.
 PCK inspector дополнительно запрещает SVG в финальном игровом экспорте.
+
+## Полный первый эпизод
+
+Текущий полный прогон включает 43 GdUnit4 и 6 Web E2E. Дополнительные suites:
+combat_test.gd, enemies_test.gd, episode_test.gd. route.spec.cjs теперь проходит
+весь эпизод: настоящая смерть/возрождение, оба врага и очага, обе фазы босса,
+награда, неудачный обычный прыжок и успешный Dash, финал и reset. Title screen
+запускается через реальный Enter; native fixtures вызывают start_game явно.
+
+Запись Playwright использует уже установленный /usr/bin/ffmpeg. Если ожидаемого
+бинарника в cache нет, без установки или обновления пакетов можно выбрать его:
+
+```bash
+mkdir -p /workspace/.godot-cloud/cache/ms-playwright/ffmpeg-1011
+ln -s /usr/bin/ffmpeg /workspace/.godot-cloud/cache/ms-playwright/ffmpeg-1011/ffmpeg-linux
+```
+
+Не перезаписывайте существующий бинарник/ссылку. Видео не содержит аудиодорожки;
+реальный браузерный звук и M проверяются отдельным Web Audio RMS-тестом.
+Полный маршрут: reports/web/artifacts/route-*/episode-evidence.json и video.webm.
+Пакеты выпуска: depth-episode-one-web.zip и depth-episode-one-screenshots.zip.
+Все команды Godot/Chromium в сетевой песочнице требуют доступ к локальным
+сокетам; отказ создания сокета является ошибкой среды, а не успешным импортом.

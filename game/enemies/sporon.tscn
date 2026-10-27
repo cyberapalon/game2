@@ -1,0 +1,13 @@
+[gd_scene format=3]
+[ext_resource type="PackedScene" path="res://game/enemies/kornevik.tscn" id="base"]
+[ext_resource type="Resource" path="res://game/enemies/sporon.tres" id="settings"]
+[ext_resource type="SpriteFrames" path="res://assets/combat/sporon_frames.tres" id="frames"]
+[sub_resource type="RectangleShape2D" id="body"]
+size = Vector2(38, 66)
+[node name="Sporon" instance=ExtResource("base")]
+settings = ExtResource("settings")
+[node name="CollisionShape2D" parent="."]
+shape = SubResource("body")
+[node name="Painting" parent="."]
+position = Vector2(0, -23)
+sprite_frames = ExtResource("frames")

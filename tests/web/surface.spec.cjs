@@ -26,6 +26,9 @@ test('Web surface receives keyboard input, moves, jumps, lands and releases focu
   // request.get duplicated the 37 MB streaming download during cold startup.
   const wasmResponse = page.waitForResponse(response => new URL(response.url()).pathname === '/index.wasm');
   const response = await page.goto('/index.html?e2e=1');
+  await page.waitForFunction(() => window.__depthE2E?.mode === 'title', null, {timeout: 45000});
+  await page.locator('#canvas').click({position: {x: 12, y: 12}});
+  await page.keyboard.press('Enter');
   expect(response.ok()).toBeTruthy();
   const wasm = await wasmResponse;
   expect(wasm.ok()).toBeTruthy();
@@ -163,6 +166,9 @@ test('rubble is reachable and the complete surface keeps readable parallax', asy
     if (message.type() === 'error' || /SCRIPT ERROR:|Parse Error:|^ERROR:/.test(message.text())) errors.push(message.text());
   });
   await page.goto('/index.html?e2e=1');
+  await page.waitForFunction(() => window.__depthE2E?.mode === 'title', null, {timeout: 45000});
+  await page.locator('#canvas').click({position: {x: 12, y: 12}});
+  await page.keyboard.press('Enter');
   await expect.poll(async () => (await state(page))?.grounded, { timeout: 45000 }).toBe(true);
   await page.locator('#canvas').click();
   const spawn = await state(page);
@@ -245,8 +251,11 @@ test('painted movement triggers dust and actual browser audio can be muted', asy
     if (message.type() === 'error' || /SCRIPT ERROR:|Parse Error:|^ERROR:/.test(message.text())) errors.push(message.text());
   });
   await page.goto('/index.html?e2e=1');
+  await page.waitForFunction(() => window.__depthE2E?.mode === 'title', null, {timeout: 45000});
+  await page.locator('#canvas').click({position: {x: 12, y: 12}});
+  await page.keyboard.press('Enter');
   await expect.poll(async () => (await state(page))?.grounded, { timeout: 45000 }).toBe(true);
-  expect((await state(page)).audio_started).toBe(false);
+  expect((await state(page)).audio_started).toBe(true); // Play is the initial real gesture.
   await page.locator('#canvas').click();
   await page.keyboard.press('ArrowRight');
   await expect.poll(async () => (await state(page)).audio_started).toBe(true);

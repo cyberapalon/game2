@@ -11,6 +11,7 @@ func before_test() -> void:
 	_release_input()
 	_route = auto_free(RouteScene.instantiate())
 	get_tree().root.add_child(_route)
+	_route.start_game()
 	_player = _route.player
 	await _frames(5)
 
@@ -58,13 +59,13 @@ func test_every_portal_has_existing_target_entry_and_return_connection() -> void
 	for id: StringName in _route.ROOMS:
 		var room: Node2D = _route.ROOMS[id].instantiate()
 		for child: Node in room.get_children():
-			if child is Area2D and child.kind == "portal":
+			if child is Area2D and child.has_method("contains_player") and child.kind == "portal":
 				assert_bool(_route.ROOMS.has(child.target_room)).is_true()
 				var destination: Node2D = _route.ROOMS[child.target_room].instantiate()
 				assert_bool(destination.has_entry(child.target_entry)).is_true()
 				var has_return: bool = false
 				for back: Node in destination.get_children():
-					if back is Area2D and back.kind == "portal" and back.target_room == id:
+					if back is Area2D and back.has_method("contains_player") and back.kind in ["portal", "seal"] and back.target_room == id:
 						has_return = true
 				assert_bool(has_return).is_true()
 				destination.free()

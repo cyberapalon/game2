@@ -10,6 +10,9 @@
 [ext_resource type="Texture2D" path="res://assets/route/sealed_gate.png" id="seal"]
 [ext_resource type="Texture2D" path="res://assets/route/ground.png" id="ground"]
 [ext_resource type="Texture2D" path="res://assets/route/fern.png" id="fern"]
+[ext_resource type="PackedScene" path="res://game/enemies/kornevik.tscn" id="kornevik"]
+[ext_resource type="PackedScene" path="res://game/enemies/sporon.tscn" id="sporon"]
+[ext_resource type="PackedScene" path="res://world/interactions/checkpoint.tscn" id="checkpoint"]
 [sub_resource type="RectangleShape2D" id="Trigger"]
 size = Vector2(100, 76)
 [sub_resource type="RectangleShape2D" id="Floor"]
@@ -169,3 +172,15 @@ position = Vector2(-28, -28)
 texture = ExtResource("secret")
 centered = false
 texture_filter = 2
+
+[node name="Sporon" parent="." instance=ExtResource("sporon")]
+position = Vector2(650, 427)
+patrol_min = 620.0
+patrol_max = 700.0
+encounter_id = &"hollow_a"
+
+[node name="Kornevik" parent="." instance=ExtResource("kornevik")]
+position = Vector2(970, 354)
+patrol_min = 920.0
+patrol_max = 1030.0
+encounter_id = &"hollow_b"

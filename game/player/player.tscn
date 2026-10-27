@@ -1,19 +1,39 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene format=3]
 
 [ext_resource type="Script" path="res://game/player/player.gd" id="1"]
 [ext_resource type="Resource" path="res://game/player/player_settings.tres" id="2"]
 [ext_resource type="PackedScene" path="res://game/player/wanderer_visual.tscn" id="3"]
+[ext_resource type="Resource" path="res://game/combat/combat_settings.tres" id="combat"]
+[ext_resource type="SpriteFrames" path="res://assets/combat/hero_frames.tres" id="combat_frames"]
 
 [sub_resource type="RectangleShape2D" id="BodyShape"]
 size = Vector2(24, 44)
+
+[sub_resource type="RectangleShape2D" id="StrikeShape"]
+size = Vector2(62, 54)
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 1
 script = ExtResource("1")
 settings = ExtResource("2")
+combat = ExtResource("combat")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("BodyShape")
 
 [node name="Visual" parent="." instance=ExtResource("3")]
+
+[node name="Strike" type="Area2D" parent="."]
+position = Vector2(36, -2)
+collision_layer = 0
+collision_mask = 4
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Strike"]
+shape = SubResource("StrikeShape")
+
+[node name="CombatSprite" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(0, -20)
+sprite_frames = ExtResource("combat_frames")
+animation = &"attack"
+texture_filter = 2
